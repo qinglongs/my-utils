@@ -1,0 +1,9 @@
+37 error Error: Command failed with exit code 128: git tag zmn-s-amount@1.0.1 -m zmn-s-amount@1.0.1
+37 error fatal: tag 'zmn-s-amount@1.0.1' already exists
+37 error     at makeError (D:\zmn\zmn-supply-chain-utils\node_modules\execa\lib\error.js:59:11)
+37 error     at handlePromise (D:\zmn\zmn-supply-chain-utils\node_modules\execa\index.js:114:26)
+37 error     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+37 error     at async Promise.all (index 0)
+37 error     at async VersionCommand.gitCommitAndTagVersionForUpdates (D:\zmn\zmn-supply-chain-utils\node_modules\lerna\dist\index.js:8516:11)
+37 error     at async VersionCommand.commitAndTagUpdates (D:\zmn\zmn-supply-chain-utils\node_modules\lerna\dist\index.js:8492:18)
+37 error     at async Promise.all (index 0)

@@ -18,5 +18,6 @@
   },
   "scripts": {
     "test": "node ./__tests__/zmn-s-amount.test.js"
-  }
+  },
+  "gitHead": "89425c3726a991f19d93deb6b0e3f22245d010c2"
 }
