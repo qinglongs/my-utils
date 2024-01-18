@@ -44,7 +44,7 @@ export const numFixed = (num: string | number, decimalPlaces: number) => {
   };
   
   /**
-   * @method 金额转换元转分截取
+   * @method 金额转换元转分截取1
    * @param amount 传入金额
    * @param decimalPlaces 保留小数位数
    */

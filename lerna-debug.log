@@ -1,9 +1,123 @@
-37 error Error: Command failed with exit code 128: git tag zmn-s-amount@1.0.1 -m zmn-s-amount@1.0.1
-37 error fatal: tag 'zmn-s-amount@1.0.1' already exists
-37 error     at makeError (D:\zmn\zmn-supply-chain-utils\node_modules\execa\lib\error.js:59:11)
-37 error     at handlePromise (D:\zmn\zmn-supply-chain-utils\node_modules\execa\index.js:114:26)
-37 error     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
-37 error     at async Promise.all (index 0)
-37 error     at async VersionCommand.gitCommitAndTagVersionForUpdates (D:\zmn\zmn-supply-chain-utils\node_modules\lerna\dist\index.js:8516:11)
-37 error     at async VersionCommand.commitAndTagUpdates (D:\zmn\zmn-supply-chain-utils\node_modules\lerna\dist\index.js:8492:18)
-37 error     at async Promise.all (index 0)
+0 silly argv {
+0 silly argv   _: [ 'publish' ],
+0 silly argv   composed: 'publish',
+0 silly argv   lernaVersion: '8.0.2',
+0 silly argv   '$0': 'C:\\Program Files\\nodejs\\node_modules\\lerna\\dist\\cli.js'
+0 silly argv }
+1 notice cli v8.0.2
+2 verbose packageConfigs Explicit "packages" configuration found in lerna.json. Resolving packages using the configured glob(s): ["packages/*"]
+3 verbose rootPath D:\zmn\zmn-supply-chain-utils
+4 info versioning independent
+5 verbose session fb68785e12d9c8aa
+6 verbose user-agent lerna/8.0.2/node@v18.14.0+x64 (win32)
+7 silly argv { _: [ 'publish' ], composed: 'publish', lernaVersion: '8.0.2' }
+8 verbose packageConfigs Explicit "packages" configuration found in lerna.json. Resolving packages using the configured glob(s): ["packages/*"]
+9 verbose rootPath D:\zmn\zmn-supply-chain-utils
+10 silly isAnythingCommitted
+11 verbose isAnythingCommitted 1
+12 silly getCurrentBranch
+13 verbose currentBranch main
+14 silly remoteBranchExists
+15 silly isBehindUpstream
+16 silly isBehindUpstream main is behind origin/main by 0 commit(s) and ahead by 1
+17 silly hasTags
+18 verbose hasTags true
+19 silly git-describe.sync "@zmn-supply-chain-utils/zmn-s-amount@1.1.2-1-g083c949" => {"lastTagName":"@zmn-supply-chain-utils/zmn-s-amount@1.1.2","lastVersion":"1.1.2","refCount":"1","sha":"083c949","isDirty":false}
+20 info Looking for changed packages since @zmn-supply-chain-utils/zmn-s-amount@1.1.2
+21 info ignoring diff in paths matching [ 'ignored-file', '*.md' ]
+22 silly checking diff packages/zmn-s-amount
+23 silly found diff in packages/zmn-s-amount/lib/index.js
+23 silly found diff in packages/zmn-s-amount/lib/types/index.d.ts
+23 silly found diff in packages/zmn-s-amount/lib/zmn-s-amount.js
+23 silly found diff in packages/zmn-s-amount/package.json
+23 silly found diff in packages/zmn-s-amount/rollup.config.js
+23 silly found diff in packages/zmn-s-amount/src/index.ts
+23 silly found diff in packages/zmn-s-amount/tsconfig.json
+24 verbose filtered diff [
+24 verbose filtered diff   'packages/zmn-s-amount/lib/index.js',
+24 verbose filtered diff   'packages/zmn-s-amount/lib/types/index.d.ts',
+24 verbose filtered diff   'packages/zmn-s-amount/lib/zmn-s-amount.js',
+24 verbose filtered diff   'packages/zmn-s-amount/package.json',
+24 verbose filtered diff   'packages/zmn-s-amount/rollup.config.js',
+24 verbose filtered diff   'packages/zmn-s-amount/src/index.ts',
+24 verbose filtered diff   'packages/zmn-s-amount/tsconfig.json'
+24 verbose filtered diff ]
+25 verbose updated zmn-supply-amount
+26 verbose git-describe undefined => "@zmn-supply-chain-utils/zmn-s-amount@1.1.2-1-g083c949"
+27 silly git-describe parsed => {"lastTagName":"@zmn-supply-chain-utils/zmn-s-amount@1.1.2","lastVersion":"1.1.2","refCount":"1","sha":"083c949","isDirty":false}
+28 info execute Skipping releases
+29 silly lifecycle No script for "preversion" in "root", continuing
+30 silly lifecycle No script for "preversion" in "zmn-supply-amount", continuing
+31 verbose version zmn-supply-amount has no lockfile. Skipping lockfile update.
+32 silly lifecycle No script for "version" in "zmn-supply-amount", continuing
+33 silly lifecycle No script for "version" in "root", continuing
+34 verbose version Updating root pnpm-lock.yaml
+35 silly gitAdd [ 'packages/zmn-s-amount/package.json', 'pnpm-lock.yaml' ]
+36 silly gitCommit chore(release): publish
+36 silly gitCommit
+36 silly gitCommit  - zmn-supply-amount@1.1.3
+37 verbose git [
+37 verbose git   'commit',
+37 verbose git   '-F',
+37 verbose git   'C:\\Users\\lenovo\\AppData\\Local\\Temp\\34d70ced-9f5c-42ad-9460-0c5b989e6720\\lerna-commit.txt'
+37 verbose git ]
+38 silly gitTag zmn-supply-amount@1.1.3 git tag %s -m %s
+39 verbose git [ 'tag', 'zmn-supply-amount@1.1.3', '-m', 'zmn-supply-amount@1.1.3' ]
+40 silly lifecycle No script for "postversion" in "zmn-supply-amount", continuing
+41 silly lifecycle No script for "postversion" in "root", continuing
+42 info git Pushing tags...
+43 silly gitPush origin main
+44 info publish Publishing packages to npm...
+45 notice Skipping all user and access validation due to third-party registry
+46 notice Make sure you're authenticated properly ¯\_(ツ)_/¯
+47 warn ENOLICENSE Package zmn-supply-amount is missing a license.
+47 warn ENOLICENSE One way to fix this is to add a LICENSE.md file to the root of this repository.
+47 warn ENOLICENSE See https://choosealicense.com for additional guidance.
+48 silly getCurrentSHA
+49 verbose getCurrentSHA 37fdc325535a845599fbd3bbc063ddb7e8fc3041
+50 silly lifecycle No script for "prepublish" in "root", continuing
+51 silly lifecycle No script for "prepare" in "root", continuing
+52 silly lifecycle No script for "prepublishOnly" in "root", continuing
+53 silly lifecycle No script for "prepack" in "root", continuing
+54 verbose pack-directory packages\zmn-s-amount
+55 silly lifecycle No script for "prepublish" in "zmn-supply-amount", continuing
+56 silly lifecycle No script for "prepare" in "zmn-supply-amount", continuing
+57 silly lifecycle No script for "prepublishOnly" in "zmn-supply-amount", continuing
+58 silly lifecycle No script for "prepack" in "zmn-supply-amount", continuing
+59 silly lifecycle No script for "postpack" in "zmn-supply-amount", continuing
+60 verbose packed packages\zmn-s-amount
+61 silly lifecycle No script for "postpack" in "root", continuing
+62 verbose publish zmn-supply-amount
+63 silly FetchError: request to http://192.168.81.10:2398/zmn-supply-amount failed, reason: connect ETIMEDOUT 192.168.81.10:2398
+63 silly     at ClientRequest.<anonymous> (D:\zmn\zmn-supply-chain-utils\node_modules\.pnpm\minipass-fetch@3.0.4\node_modules\minipass-fetch\lib\index.js:130:14)
+63 silly     at ClientRequest.emit (node:events:513:28)
+63 silly     at Socket.socketErrorListener (node:_http_client:502:9)
+63 silly     at Socket.emit (node:events:525:35)
+63 silly     at emitErrorNT (node:internal/streams/destroy:151:8)
+63 silly     at emitErrorCloseNT (node:internal/streams/destroy:116:3)
+63 silly     at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+63 silly  FetchError: request to http://192.168.81.10:2398/zmn-supply-amount failed, reason: connect ETIMEDOUT 192.168.81.10:2398
+63 silly     at ClientRequest.<anonymous> (D:\zmn\zmn-supply-chain-utils\node_modules\.pnpm\minipass-fetch@3.0.4\node_modules\minipass-fetch\lib\index.js:130:14)
+63 silly     at ClientRequest.emit (node:events:513:28)
+63 silly     at Socket.socketErrorListener (node:_http_client:502:9)
+63 silly     at Socket.emit (node:events:525:35)
+63 silly     at emitErrorNT (node:internal/streams/destroy:151:8)
+63 silly     at emitErrorCloseNT (node:internal/streams/destroy:116:3)
+63 silly     at process.processTicksAndRejections (node:internal/process/task_queues:82:21) {
+63 silly   code: 'ETIMEDOUT',
+63 silly   errno: 'ETIMEDOUT',
+63 silly   syscall: 'connect',
+63 silly   address: '192.168.81.10',
+63 silly   port: 2398,
+63 silly   type: 'system'
+63 silly }
+64 warn notice Package failed to publish: zmn-supply-amount
+65 error ETIMEDOUT request to http://192.168.81.10:2398/zmn-supply-amount failed, reason: connect ETIMEDOUT 192.168.81.10:2398
+66 error errno "ETIMEDOUT" is not a valid exit code - exiting with code 1
+67 error FetchError: request to http://192.168.81.10:2398/zmn-supply-amount failed, reason: connect ETIMEDOUT 192.168.81.10:2398
+67 error     at ClientRequest.<anonymous> (D:\zmn\zmn-supply-chain-utils\node_modules\.pnpm\minipass-fetch@3.0.4\node_modules\minipass-fetch\lib\index.js:130:14)
+67 error     at ClientRequest.emit (node:events:513:28)
+67 error     at Socket.socketErrorListener (node:_http_client:502:9)
+67 error     at Socket.emit (node:events:525:35)
+67 error     at emitErrorNT (node:internal/streams/destroy:151:8)
+67 error     at emitErrorCloseNT (node:internal/streams/destroy:116:3)
