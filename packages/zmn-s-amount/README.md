@@ -1,11 +1,3 @@
-# `zmn-s-amount`
+# `zmn-supply-amount`
 
-> TODO: description
-
-## Usage
-
-```
-const zmnSAmount = require('zmn-s-amount');
-
-// TODO: DEMONSTRATE API
-```
+> 供应链金额处理工具函数库

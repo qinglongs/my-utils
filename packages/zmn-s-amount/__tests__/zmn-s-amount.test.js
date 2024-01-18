@@ -3,5 +3,6 @@
 const zmnSAmount = require('..');
 const assert = require('assert').strict;
 
-assert.strictEqual(zmnSAmount(), 'Hello from zmnSAmount');
-console.info('zmnSAmount tests passed');
+assert.strictEqual(zmnSAmount.numFixed(2.555), 2.56);
+
+console.info('numFixed tests passed');
