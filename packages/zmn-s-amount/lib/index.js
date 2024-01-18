@@ -3,8 +3,8 @@
  * @param num 传入数值
  * @param decimalPlaces 保留小数位数
  */
-var numFixed = function (num, decimalPlaces) {
-    return (+num).toFixed(decimalPlaces);
+var numFixed = function (num1, decimalPlaces) {
+    return (+num1).toFixed(decimalPlaces);
 };
 /**
  * @method 小数截取

@@ -3,7 +3,7 @@
  * @param num 传入数值
  * @param decimalPlaces 保留小数位数
  */
-export declare const numFixed: (num: string | number, decimalPlaces: number) => string;
+export declare const numFixed: (num1: string | number, decimalPlaces: number) => string;
 /**
  * @method 小数截取
  * @param num 传入数值

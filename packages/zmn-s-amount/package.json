@@ -1,7 +1,7 @@
 {
   "name": "zmn-supply-amount",
   "version": "1.1.14",
-  "description": "> TODO: description",
+  "description": "供应链金额处理函数库",
   "author": "Alen <924229679@qq.com>",
   "homepage": "",
   "type": "module",
