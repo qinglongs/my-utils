@@ -1,5 +1,5 @@
-var numFixed = function (num, decimalPlaces) {
-    return (+num).toFixed(decimalPlaces);
+var numFixed = function (num1, decimalPlaces) {
+    return (+num1).toFixed(decimalPlaces);
 };
 var numSlice = function (num, decimalPlaces) {
     var regex = new RegExp("\\.\\d{".concat(decimalPlaces, ",}$"));

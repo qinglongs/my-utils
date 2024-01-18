@@ -1,4 +1,4 @@
-export declare const numFixed: (num: string | number, decimalPlaces: number) => string;
+export declare const numFixed: (num1: string | number, decimalPlaces: number) => string;
 export declare const numSlice: (num: string | number, decimalPlaces: number) => string;
 export declare const splitThousand: (num: string | number) => string;
 export declare const amountSliceToYuan: (amount: number | string, decimalPlaces?: number) => string;

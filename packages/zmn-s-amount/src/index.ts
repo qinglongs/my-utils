@@ -3,8 +3,8 @@
  * @param num 传入数值
  * @param decimalPlaces 保留小数位数
  */
-export const numFixed = (num: string | number, decimalPlaces: number) => {
-    return (+num).toFixed(decimalPlaces);
+export const numFixed = (num1: string | number, decimalPlaces: number) => {
+    return (+num1).toFixed(decimalPlaces);
   };
   
   /**
