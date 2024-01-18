@@ -1,0 +1,29 @@
+{
+  "name": "zmn-supply-platform",
+  "version": "1.0.0",
+  "description": "供应链平台相关工具函数",
+  "author": "liqinglong <liqinglong@zmn.cn>",
+  "homepage": "https://github.com/qinglongs/zmn-supply-chain-utils#readme",
+  "license": "ISC",
+  "main": "lib/zmn-supply-platform.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "registry": "http://192.168.81.10:2398/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qinglongs/zmn-supply-chain-utils.git"
+  },
+  "scripts": {
+    "test": "node ./__tests__/zmn-supply-platform.test.js"
+  },
+  "bugs": {
+    "url": "https://github.com/qinglongs/zmn-supply-chain-utils/issues"
+  }
+}
