@@ -6,7 +6,7 @@
   "homepage": "",
   "type": "module",
   "license": "ISC",
-  "main": "lib/zmn-s-amount.js",
+  "main": "lib/index.js",
   "directories": {
     "lib": "lib",
     "test": "__tests__"
