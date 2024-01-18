@@ -1,6 +1,6 @@
 {
   "name": "zmn-supply-amount",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "description": "> TODO: description",
   "author": "Alen <924229679@qq.com>",
   "homepage": "",
@@ -19,7 +19,7 @@
   },
   "scripts": {
     "test": "node ./__tests__/zmn-s-amount.test.js",
-    "build":"npx rollup --config rollup.config.js"
+    "build": "npx rollup --config rollup.config.js"
   },
   "gitHead": "5d43ba8ce7bfb648d12783283280c6b438ceca2e"
 }
