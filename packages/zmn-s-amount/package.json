@@ -19,5 +19,5 @@
   "scripts": {
     "test": "node ./__tests__/zmn-s-amount.test.js"
   },
-  "gitHead": "89425c3726a991f19d93deb6b0e3f22245d010c2"
+  "gitHead": "5d43ba8ce7bfb648d12783283280c6b438ceca2e"
 }

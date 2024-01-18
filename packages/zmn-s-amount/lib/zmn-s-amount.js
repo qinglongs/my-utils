@@ -3,5 +3,5 @@
 module.exports = zmnSAmount;
 
 function zmnSAmount() {
-  return 'Hello from zmnSAmount1234';
+  return 'Hello from zmnSAmount12345';
 }
