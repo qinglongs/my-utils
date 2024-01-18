@@ -7,7 +7,7 @@ var numFixed = function (num, decimalPlaces) {
     return (+num).toFixed(decimalPlaces);
 };
 /**
- * @method 小数截取1
+ * @method 小数截取
  * @param num 传入数值
  * @param decimalPlaces 保留小数位数
  */

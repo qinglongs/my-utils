@@ -3,7 +3,7 @@
 > 供应链金额处理工具函数库
 
 
-```typescript
+```ts
 /**
  * @method 四舍五入
  * @param num 传入数值
