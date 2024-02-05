@@ -3,5 +3,5 @@
 module.exports = zmnSupplyFetch;
 
 function zmnSupplyFetch() {
-  return 'Hello from zmnSupplyFetch111';
+  return 'Hello from zmnSupplyFetch';
 }

@@ -4,7 +4,10 @@
  * @param decimalPlaces 保留小数位数
  */
 var numFixed = function (num1, decimalPlaces) {
-    return (+num1).toFixed(decimalPlaces);
+    if (decimalPlaces === void 0) { decimalPlaces = 2; }
+    var i = decimalPlaces - 1;
+    var result = Math.round(+(+num1 * +"10e".concat(i)).toPrecision(15)) / +"10e".concat(i);
+    return result.toFixed(decimalPlaces);
 };
 /**
  * @method 小数截取
@@ -12,11 +15,10 @@ var numFixed = function (num1, decimalPlaces) {
  * @param decimalPlaces 保留小数位数
  */
 var numSlice = function (num, decimalPlaces) {
-    var regex = new RegExp("\\.\\d{".concat(decimalPlaces, ",}$"));
-    var tmp = num.toString().replace(regex, function (match) {
-        return match.replace(/0+$/, "").replace(/\.$/, "");
-    });
-    return (+tmp).toFixed(decimalPlaces);
+    if (decimalPlaces === void 0) { decimalPlaces = 2; }
+    var i = decimalPlaces - 1;
+    var result = Math.floor(+(+num * +"10e".concat(i)).toPrecision(15)) / +"10e".concat(i);
+    return decimalPlaces !== undefined ? result.toFixed(decimalPlaces) : result;
 };
 /**
  * @method 数字千分位分割
@@ -65,7 +67,7 @@ var amountFixedToFen = function (amount, decimalPlaces) {
     return numFixed(+amount * 100, decimalPlaces);
 };
 /**
- * @method 金额小数分割成数组默认是分
+ * @method 将金额分割成数组，不进行四舍五入,默认传入单位为分
  * @param amount 传入金额
  * @param decimalPlaces 保留小数位数
  * @param type 表示传入金额是分还是元

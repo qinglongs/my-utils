@@ -1,6 +1,6 @@
 # `zmn-supply-fetch`
 
-> TODO: description
+> 供应链统一请求函数
 
 ## Usage
 
