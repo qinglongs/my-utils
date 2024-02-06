@@ -10,5 +10,8 @@
   },
   "devDependencies": {
     "lerna": "^8.0.2"
+  },
+  "scripts": {
+    "build": "npx rollup --config rollup.config.mjs"
   }
 }

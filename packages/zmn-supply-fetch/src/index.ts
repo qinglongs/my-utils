@@ -21,7 +21,7 @@ type Options = {
   type: keyof typeof URL_ENUM;
 };
 
-class Fetch {
+export class Fetch {
   method: "POST" | "GET" | "PUT" | "DELETE";
   headers: any;
 
@@ -31,12 +31,12 @@ class Fetch {
   private type: keyof typeof URL_ENUM = "mapp";
 
   constructor(options: Options) {
-
-    if(!options.config) {
-      console.error('请传入 config ');
+    this.method = "POST";
+    this.config = options.config;
+    if (!options.config) {
+      console.error("请传入 config ");
       return;
     }
-
 
     this.setConfig(options.config);
   }
@@ -45,17 +45,11 @@ class Fetch {
     this.config = config;
   }
 
-  private getUri(config){
-    
-  }
+  private getUri(config: any) {}
 
   private async _fetch(url: string, options: RequestInit) {
-
     const fullPath = url;
 
     const res = await fetch(url, options);
-
-    
-
   }
 }

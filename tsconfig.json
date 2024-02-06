@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "outDir": "packages",
+    "declaration": true,
+  },
+  "include": ["packages"],
+  "exclude": ["node_modules", "**/*.spec.ts"]
+}
