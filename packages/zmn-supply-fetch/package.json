@@ -1,6 +1,6 @@
 {
   "name": "zmn-supply-fetch",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "供应链H5页面统一请求函数",
   "keywords": [
     "供应链H5页面统一请求函数"
