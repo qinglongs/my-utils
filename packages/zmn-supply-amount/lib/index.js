@@ -3,10 +3,9 @@
  * @param num 传入数值
  * @param decimalPlaces 保留小数位数
  */
-var numFixed = function (num1, decimalPlaces) {
-    if (decimalPlaces === void 0) { decimalPlaces = 2; }
-    var i = decimalPlaces - 1;
-    var result = Math.round(+(+num1 * +"10e".concat(i)).toPrecision(15)) / +"10e".concat(i);
+const numFixed = (num1, decimalPlaces = 2) => {
+    const i = decimalPlaces - 1;
+    const result = Math.round(+(+num1 * +`10e${i}`).toPrecision(15)) / +`10e${i}`;
     return result.toFixed(decimalPlaces);
 };
 /**
@@ -14,19 +13,18 @@ var numFixed = function (num1, decimalPlaces) {
  * @param num 传入数值
  * @param decimalPlaces 保留小数位数
  */
-var numSlice = function (num, decimalPlaces) {
-    if (decimalPlaces === void 0) { decimalPlaces = 2; }
-    var i = decimalPlaces - 1;
-    var result = Math.floor(+(+num * +"10e".concat(i)).toPrecision(15)) / +"10e".concat(i);
+const numSlice = (num, decimalPlaces = 2) => {
+    const i = decimalPlaces - 1;
+    const result = Math.floor(+(+num * +`10e${i}`).toPrecision(15)) / +`10e${i}`;
     return decimalPlaces !== undefined ? result.toFixed(decimalPlaces) : result;
 };
 /**
  * @method 数字千分位分割
  * @param num 传入数值
  */
-var splitThousand = function (num) {
-    var tmp = (num || 0).toString();
-    var parts = tmp.split(".");
+const splitThousand = (num) => {
+    const tmp = (num || 0).toString();
+    const parts = tmp.split(".");
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     return parts.join(".");
 };
@@ -35,8 +33,7 @@ var splitThousand = function (num) {
  * @param amount 传入金额
  * @param decimalPlaces 保留小数位数
  */
-var amountSliceToYuan = function (amount, decimalPlaces) {
-    if (decimalPlaces === void 0) { decimalPlaces = 2; }
+const amountSliceToYuan = (amount, decimalPlaces = 2) => {
     return numSlice(+amount / 100, decimalPlaces);
 };
 /**
@@ -44,8 +41,7 @@ var amountSliceToYuan = function (amount, decimalPlaces) {
  * @param amount 传入金额
  * @param decimalPlaces 保留小数位数
  */
-var amountSliceToFen = function (amount, decimalPlaces) {
-    if (decimalPlaces === void 0) { decimalPlaces = 0; }
+const amountSliceToFen = (amount, decimalPlaces = 0) => {
     return numSlice(+amount * 100, decimalPlaces);
 };
 /**
@@ -53,8 +49,7 @@ var amountSliceToFen = function (amount, decimalPlaces) {
  * @param amount 传入金额
  * @param decimalPlaces 保留小数位数
  */
-var amountFixedToYuan = function (amount, decimalPlaces) {
-    if (decimalPlaces === void 0) { decimalPlaces = 2; }
+const amountFixedToYuan = (amount, decimalPlaces = 2) => {
     return numFixed(+amount / 100, decimalPlaces);
 };
 /**
@@ -62,8 +57,7 @@ var amountFixedToYuan = function (amount, decimalPlaces) {
  * @param amount 传入金额
  * @param decimalPlaces 保留小数位数
  */
-var amountFixedToFen = function (amount, decimalPlaces) {
-    if (decimalPlaces === void 0) { decimalPlaces = 0; }
+const amountFixedToFen = (amount, decimalPlaces = 0) => {
     return numFixed(+amount * 100, decimalPlaces);
 };
 /**
@@ -72,10 +66,8 @@ var amountFixedToFen = function (amount, decimalPlaces) {
  * @param decimalPlaces 保留小数位数
  * @param type 表示传入金额是分还是元
  *  */
-var amountSplitToArray = function (amount, decimalPlaces, type) {
-    if (decimalPlaces === void 0) { decimalPlaces = 2; }
-    if (type === void 0) { type = "F"; }
-    var tmpAmount = type === "F"
+const amountSplitToArray = (amount, decimalPlaces = 2, type = "F") => {
+    const tmpAmount = type === "F"
         ? amountSliceToYuan(amount, decimalPlaces)
         : numSlice(amount, decimalPlaces);
     return tmpAmount.toString().split(".");

@@ -1,4 +1,4 @@
-var platform = function () {
+const platform = () => {
     console.log("平台");
 };
 

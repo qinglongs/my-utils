@@ -6,7 +6,7 @@ declare const URL_ENUM: {
 };
 type Options = {
     config: {
-        /** 认证类型 api-key 参数需要使用rsa算法加密 */
+        /** 接口认证类型 如果是 api-key 参数需要使用rsa算法加密 */
         authType: "api-key" | "app-key";
         appKey: string;
         secretKey: string;
@@ -15,18 +15,21 @@ type Options = {
     };
     /** 接口请求的地址 */
     baseUrl: string;
-    headers?: any;
     type: keyof typeof URL_ENUM;
+    headers: HeadersInit;
 };
 export declare class Fetch {
     method: "POST" | "GET" | "PUT" | "DELETE";
-    headers: any;
+    headers: HeadersInit;
     /** 配置参数 */
     config: Options["config"];
     private type;
     constructor(options: Options);
     setConfig(config: Options["config"]): void;
     private getUri;
+    private _getRequestData;
+    private setHeaders;
+    /** 请求方法 */
     private _fetch;
 }
 export {};
