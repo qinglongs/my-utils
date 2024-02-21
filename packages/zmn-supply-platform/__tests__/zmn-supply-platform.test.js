@@ -1,7 +1,5 @@
-'use strict';
-
-const zmnSupplyPlatform = require('..');
+import { platform } from '../lib/index';
 const assert = require('assert').strict;
 
-assert.strictEqual(zmnSupplyPlatform(), 'Hello from zmnSupplyPlatform');
-console.info('zmnSupplyPlatform tests passed');
+assert.strictEqual(platform(), '平台');
+console.info('platform tests passed');

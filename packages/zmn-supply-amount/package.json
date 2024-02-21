@@ -19,7 +19,7 @@
     "registry": "http://192.168.81.10:2398/"
   },
   "scripts": {
-    "test": "node ./__tests__/zmn-s-amount.test.js"
+    "test": "node ./__tests__/amount.test.js"
   },
   "gitHead": "37fdc325535a845599fbd3bbc063ddb7e8fc3041"
 }

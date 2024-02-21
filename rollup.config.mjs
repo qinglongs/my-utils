@@ -19,7 +19,5 @@ const genPackages = () => {
 };
 
 export default () => {
-	console.log("-----------------------------------------", path.resolve());
-
 	return genPackages();
 };

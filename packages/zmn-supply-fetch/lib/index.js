@@ -1,4 +1,4 @@
-import { isUndefined, querystring } from 'zmn-supply-utils';
+import 'zmn-supply-utils';
 
 /******************************************************************************
 Copyright (c) Microsoft Corporation.
@@ -17,71 +17,7 @@ PERFORMANCE OF THIS SOFTWARE.
 /* global Reflect, Promise, SuppressedError, Symbol */
 
 
-function __awaiter(thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-}
-
 typeof SuppressedError === "function" ? SuppressedError : function (error, suppressed, message) {
     var e = new Error(message);
     return e.name = "SuppressedError", e.error = error, e.suppressed = suppressed, e;
 };
-
-class Fetch {
-    constructor(options) {
-        this.type = "mapp";
-        const { config, headers } = options;
-        if (!config) {
-            throw Error("请指定 config 参数");
-        }
-        this.headers = headers;
-        this.method = "POST";
-        this.config = options.config;
-        if (!options.config) {
-            console.error("请传入 config ");
-            return;
-        }
-        this.setConfig(options.config);
-    }
-    setConfig(config) {
-        this.config = Object.assign(Object.assign({}, this.config), config);
-    }
-    getUri(config) { }
-    _getRequestData(data) {
-        if (isUndefined(data))
-            return undefined;
-        return data instanceof FormData ? data : JSON.stringify(data);
-    }
-    setHeaders(headers) {
-        this.config;
-        return headers;
-    }
-    /** 请求方法 */
-    _fetch(url, options) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const { method, query, data, responseType = "json" } = options;
-            if (query) {
-                url += `?${querystring(query)}`;
-            }
-            const requestData = this._getRequestData(data);
-            const res = yield fetch(url, {
-                method,
-                headers: this.headers,
-                body: requestData,
-            });
-            if (responseType === "json") {
-                return yield res.json();
-            }
-            if (responseType === "blob") {
-                return yield res.blob();
-            }
-        });
-    }
-}
-
-export { Fetch };

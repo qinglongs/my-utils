@@ -15,5 +15,9 @@ function querystring(obj, encode = false) {
 const isUndefined = (value1) => {
     return [undefined, null, ""].includes(value1);
 };
+/** 值是否是formData */
+const isFormData = (val) => {
+    return val instanceof FormData;
+};
 
-export { isUndefined, querystring };
+export { isFormData, isUndefined, querystring };

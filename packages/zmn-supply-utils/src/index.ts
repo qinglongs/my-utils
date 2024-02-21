@@ -15,3 +15,8 @@ export function querystring(obj: Record<string, any>, encode = false) {
 export const isUndefined = (value1: any) => {
   return [undefined, null, ""].includes(value1);
 };
+
+/** 值是否是formData */
+export const isFormData = (val: any) => {
+  return val instanceof FormData;
+};

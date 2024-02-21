@@ -6,6 +6,7 @@
   "homepage": "https://github.com/qinglongs/zmn-supply-chain-utils#readme",
   "license": "ISC",
   "main": "lib/zmn-supply-platform.js",
+  "type": "module",
   "directories": {
     "lib": "lib",
     "test": "__tests__"

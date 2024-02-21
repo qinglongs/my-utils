@@ -1,14 +1,14 @@
 {
-  "name": "zmn-supply-fetch",
-  "version": "0.0.5",
-  "description": "供应链H5页面统一请求函数",
+  "name": "@zmn/zmn-scm-amount",
+  "version": "0.0.1",
+  "description": "供应链前端金额处理工具函数",
   "keywords": [
-    "供应链H5页面统一请求函数"
+    "供应链前端金额处理工具函数"
   ],
-  "author": "Alen <924229679@qq.com>",
+  "author": "liqinglong <liqinglong@zmn.cn>",
   "homepage": "https://github.com/qinglongs/zmn-supply-chain-utils#readme",
   "license": "ISC",
-  "main": "lib/zmn-supply-fetch.js",
+  "main": "lib/index.js",
   "type": "module",
   "directories": {
     "lib": "lib",
@@ -25,12 +25,9 @@
     "url": "git+https://github.com/qinglongs/zmn-supply-chain-utils.git"
   },
   "scripts": {
-    "test": "node ./__tests__/zmn-supply-fetch.test.js"
+    "test": "node ./__tests__/amount.test.js"
   },
   "bugs": {
     "url": "https://github.com/qinglongs/zmn-supply-chain-utils/issues"
-  },
-  "dependencies": {
-    "zmn-supply-utils": "^1.0.0"
   }
 }

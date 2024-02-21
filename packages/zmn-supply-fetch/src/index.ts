@@ -1,4 +1,4 @@
-import { isUndefined, querystring } from "zmn-supply-utils";
+import { isUndefined, querystring, isFormData } from "zmn-supply-utils";
 
 const URL_ENUM = {
   mapp: "https://api-mapp.xiujiadian.com/ratel",
@@ -29,80 +29,57 @@ type Options = {
   baseUrl: string;
   type: keyof typeof URL_ENUM;
   headers: HeadersInit;
+  data: Record<string, any>;
+  query: Record<string, any>;
 };
 
-export class Fetch {
-  method: "POST" | "GET" | "PUT" | "DELETE";
-  headers: HeadersInit;
+const zmnFetch = (
+  url: string,
+  options: RequestInit & {
+    data: { [key: string]: any };
+    responseType: "json" | "blob";
+    query: { [key: string]: any };
+  }
+) => {
+  const { data, responseType = "json", query } = options;
 
-  /** 配置参数 */
-  config: Options["config"];
+  const option: RequestInit & { [key: string]: any } = {
+    "Content-Type": "application/json",
+    ...options,
+  };
 
-  private type: keyof typeof URL_ENUM = "mapp";
-
-  constructor(options: Options) {
-    const { config, headers } = options;
-
-    if (!config) {
-      throw Error("请指定 config 参数");
-    }
-
-    this.headers = headers;
-
-    this.method = "POST";
-
-    this.config = options.config;
-
-    if (!options.config) {
-      console.error("请传入 config ");
-      return;
-    }
-
-    this.setConfig(options.config);
+  if (isFormData(data)) {
+    delete option["Content-Type"];
+    option.body = data as FormData;
+  } else {
+    options.body = JSON.stringify(data);
   }
 
-  public setConfig(config: Options["config"]) {
-    this.config = { ...this.config, ...config };
+  if (!isUndefined(query)) {
+    url += `?${querystring(query)}`;
   }
 
-  private getUri(config: any) {}
-
-  private _getRequestData(data?: Record<string, any> | FormData) {
-    if (isUndefined(data)) return undefined;
-
-    return data instanceof FormData ? data : JSON.stringify(data);
-  }
-
-  private setHeaders(headers: HeadersInit) {
-    const { authType } = this.config;
-
-    return headers;
-  }
-
-  /** 请求方法 */
-  private async _fetch(url: string, options: FetchOptions) {
-    const { method, query, data, responseType = "json" } = options;
-
-    if (query) {
-      url += `?${querystring(query)}`;
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await fetch(url, option);
+      if (response.ok) {
+        if (responseType === "json") {
+          return resolve(response.json());
+        }
+        if (responseType === "blob") {
+          return resolve(await response.blob());
+        }
+      }
+    } catch (error) {
+      reject(error);
     }
+  });
+};
 
-    const requestData = this._getRequestData(data);
+const zmnFetchWrapper = (url: string, option: Options) => {
+  const { config, baseUrl, type = "mapp", headers: h } = option;
 
-    const res = await fetch(url, {
-      method,
-      headers: this.headers,
-      body: requestData,
-    });
-
-    if (responseType === "json") {
-      return await res.json();
-    }
-
-    if (responseType === "blob") {
-      return await res.blob();
-    }
-  }
-
-
-}
+  const headers = {
+    ...h,
+  };
+};
