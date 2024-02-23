@@ -1,6 +1,6 @@
 {
   "name": "@zmn/zmn-scm-amount",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "供应链前端金额处理工具函数",
   "keywords": [
     "供应链前端金额处理工具函数"
