@@ -4,10 +4,12 @@ specifiers:
   '@rollup/plugin-typescript': ^11.1.6
   lerna: ^8.0.2
   rollup: ^4.9.5
+  zmn-supply-utils: '*'
 
 dependencies:
   '@rollup/plugin-typescript': 11.1.6_rollup@4.9.5
   rollup: 4.9.5
+  zmn-supply-utils: 1.0.1
 
 devDependencies:
   lerna: 8.0.2
@@ -4272,3 +4274,7 @@ packages:
       y18n: 5.0.8
       yargs-parser: 21.1.1
     dev: true
+
+  /zmn-supply-utils/1.0.1:
+    resolution: {integrity: sha512-7v683P/uHU4uIGlEhx+gz9zWhPZW3n2XLD47qxtBsHVJm9ZTZcrzOE2BZdRDOg4Z/OOPIORnTOsy4y6Ni73FsA==}
+    dev: false
