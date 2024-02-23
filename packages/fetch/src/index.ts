@@ -1,4 +1,4 @@
-import { isEmpty, querystring, isFormData } from "zmn-supply-utils";
+import { isEmpty, querystring, isFormData } from "@zmn/zmn-scm-utils";
 
 import { HttpMethod, SignUtil, RsaUtil } from "zmn-ratel-sdk";
 

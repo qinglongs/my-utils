@@ -1,4 +1,4 @@
-/** query 转 string */
+/** query 转 string，用于路由参数拼接 */
 export function querystring(obj: Record<string, any>, encode = false) {
   const str = [];
   for (const i in obj) {
@@ -11,30 +11,37 @@ export function querystring(obj: Record<string, any>, encode = false) {
   return str.join("&");
 }
 
+/** 是否数组 */
 export const isArray = (value: any) => {
   return Object.prototype.toString.call(value) === "[object Array]";
 };
 
+/** 是否对象 */
 export const isObject = (value: any) => {
   return Object.prototype.toString.call(value) === "[object Object]";
 };
 
+/** 是否字符串 */
 export const isString = (value: any) => {
   return Object.prototype.toString.call(value) === "[object String]";
 };
 
+/** 是否数字 */
 export const isNumber = (value: any) => {
   return Object.prototype.toString.call(value) === "[object Number]";
 };
 
+/** 是否函数 */
 export const isFunction = (value: any) => {
   return Object.prototype.toString.call(value) === "[object Function]";
 };
 
+/** 是否symbol */
 export const isSymbol = (value: any) => {
   return Object.prototype.toString.call(value) === "[object Symbol]";
 };
 
+/** 是否布尔值 */
 export const isBoolean = (value: any) => {
   return Object.prototype.toString.call(value) === "[object Boolean]";
 };

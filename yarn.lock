@@ -527,11 +527,16 @@
   resolved "file:packages/amount"
 
 "@zmn/zmn-scm-fetch@file:D:\\zmn\\zmn-supply-chain-utils\\packages\\fetch":
-  version "0.0.1"
+  version "0.0.2"
   resolved "file:packages/fetch"
   dependencies:
+    "@zmn/zmn-scm-utils" "^0.0.1"
     zmn-ratel-sdk "^1.3.8"
-    zmn-supply-utils "^1.0.1"
+    zmn-supply-utils "^1.0.2"
+
+"@zmn/zmn-scm-utils@^0.0.1", "@zmn/zmn-scm-utils@file:D:\\zmn\\zmn-supply-chain-utils\\packages\\utils":
+  version "0.0.1"
+  resolved "file:packages/utils"
 
 abbrev@^2.0.0:
   version "2.0.0"
@@ -4181,20 +4186,11 @@ zmn-ratel-sdk@^1.3.8:
     encryptlong "^3.1.4"
     zmn-ratel-sdk-sign "^1.0.2"
 
-"zmn-supply-amount@file:D:\\zmn\\zmn-supply-chain-utils\\packages\\zmn-supply-amount":
-  version "1.1.19"
-  resolved "file:packages/zmn-supply-amount"
-
-"zmn-supply-fetch@file:D:\\zmn\\zmn-supply-chain-utils\\packages\\zmn-supply-fetch":
-  version "0.0.6"
-  resolved "file:packages/zmn-supply-fetch"
-  dependencies:
-    zmn-supply-utils "^1.0.1"
-
 "zmn-supply-platform@file:D:\\zmn\\zmn-supply-chain-utils\\packages\\zmn-supply-platform":
   version "1.0.3"
   resolved "file:packages/zmn-supply-platform"
 
-zmn-supply-utils@^1.0.1, "zmn-supply-utils@file:D:\\zmn\\zmn-supply-chain-utils\\packages\\zmn-supply-utils":
-  version "1.0.1"
-  resolved "file:packages/zmn-supply-utils"
+zmn-supply-utils@*:
+  version "1.0.2"
+  resolved "http://192.168.81.10:2398/zmn-supply-utils/-/zmn-supply-utils-1.0.2.tgz"
+  integrity sha512-x5u1luzagMpte6tAnUq221aqs/PafJFMiAH6OPmZeCqodE4wc/q0/VDzmUcD3umW1b/bQLnm0J+aewc/1rwgQg==

@@ -1,12 +1,11 @@
 {
-  "name": "zmn-supply-platform",
-  "version": "1.0.3",
-  "description": "供应链平台相关工具函数",
+  "name": "@zmn/zmn-scm-native",
+  "version": "0.0.1",
+  "description": "h5或者uniapp向原生交互相关工具集",
   "author": "liqinglong <liqinglong@zmn.cn>",
   "homepage": "https://github.com/qinglongs/zmn-supply-chain-utils#readme",
   "license": "ISC",
-  "main": "lib/zmn-supply-platform.js",
-  "type": "module",
+  "main": "lib/index.js",
   "directories": {
     "lib": "lib",
     "test": "__tests__"
@@ -22,7 +21,7 @@
     "url": "git+https://github.com/qinglongs/zmn-supply-chain-utils.git"
   },
   "scripts": {
-    "test": "node ./__tests__/zmn-supply-platform.test.js"
+    "test": "node ./__tests__/native.test.js"
   },
   "bugs": {
     "url": "https://github.com/qinglongs/zmn-supply-chain-utils/issues"
