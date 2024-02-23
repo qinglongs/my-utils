@@ -6,7 +6,8 @@
   ],
   "dependencies": {
     "@rollup/plugin-typescript": "^11.1.6",
-    "rollup": "^4.9.5"
+    "rollup": "^4.9.5",
+    "zmn-supply-utils": "*"
   },
   "devDependencies": {
     "lerna": "^8.0.2"

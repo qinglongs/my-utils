@@ -4,6 +4,7 @@
     "declaration": true,
     "target": "ES2015",
     "lib": ["esnext", "dom"],
+    "moduleResolution": "node"
   },
   "include": ["packages"],
   "exclude": ["node_modules", "**/*.spec.ts"]
