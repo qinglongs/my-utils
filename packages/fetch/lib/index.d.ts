@@ -63,7 +63,7 @@ export declare class Fetch {
     del(url: string, option: FetchOptions): Promise<unknown>;
     /** Fetch 实例 */
     private static instance;
-    /** 单例模式，仅维持一个 Fetch 实例 */
+    /** 单例，创建 Fetch 实例 */
     static createService(option: Options): Fetch;
 }
 export {};

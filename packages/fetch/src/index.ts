@@ -189,7 +189,7 @@ export class Fetch {
   /** Fetch 实例 */
   private static instance: Fetch;
 
-  /** 单例模式，仅维持一个 Fetch 实例 */
+  /** 单例，创建 Fetch 实例 */
   static createService(option: Options) {
     if (!Fetch.instance) {
       Fetch.instance = new Fetch(option);

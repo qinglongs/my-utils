@@ -1,6 +1,7 @@
 {
   "name": "root",
   "private": true,
+  "type":"module",
   "workspaces": [
     "packages/*"
   ],
@@ -13,6 +14,6 @@
     "lerna": "^8.0.2"
   },
   "scripts": {
-    "build": "npx rollup --config rollup.config.mjs"
+    "build": "npx rollup --config rollup.config.js"
   }
 }

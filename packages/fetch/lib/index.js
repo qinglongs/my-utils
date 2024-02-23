@@ -147,7 +147,7 @@ class Fetch {
     del(url, option) {
         return this._requestWrapper(url, Object.assign({ method: "DELETE" }, option));
     }
-    /** 单例模式，仅维持一个 Fetch 实例 */
+    /** 单例，创建 Fetch 实例 */
     static createService(option) {
         if (!Fetch.instance) {
             Fetch.instance = new Fetch(option);
