@@ -113,7 +113,7 @@ class Fetch {
       setRequestOptions,
     } = this._options;
 
-    const { type = "mapp", headers: h, method, body } = option;
+    const { type = "mapp", headers: h, method, body,reqType='json' } = option;
 
     const BASE_URL = URI[type];
 
@@ -138,7 +138,7 @@ class Fetch {
     };
 
     // 如果是 api-key 认证
-    if (isApiKeyAuth(authType)) {
+    if (isApiKeyAuth(authType)&&reqType==='json') {
       requestData = {
         ak: appKey,
         body: RsaUtil.encrypt(JSON.stringify(body), reqPublicKey),
@@ -149,6 +149,7 @@ class Fetch {
       headers,
       method,
       type,
+      body:requestData
       ...this._options,
     };
 
