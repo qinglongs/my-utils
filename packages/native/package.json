@@ -1,6 +1,6 @@
 {
   "name": "@zmn/zmn-scm-native",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "h5或者uniapp向原生交互相关工具集",
   "author": "liqinglong <liqinglong@zmn.cn>",
   "homepage": "https://github.com/qinglongs/zmn-supply-chain-utils#readme",

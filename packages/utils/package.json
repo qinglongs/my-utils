@@ -1,6 +1,6 @@
 {
   "name": "@zmn/zmn-scm-utils",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "供应链通用工具函数集合",
   "author": "liqinglong <liqinglong@zmn.cn>",
   "homepage": "https://github.com/qinglongs/zmn-supply-chain-utils#readme",
