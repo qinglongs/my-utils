@@ -58,7 +58,7 @@ class Fetch {
     }
     /** 统一请求方法 */
     _request(url, options) {
-        const { body, query, resType, method, headers } = options;
+        const { body, query, resType = "json", method, headers } = options;
         const option = Object.assign(Object.assign({}, options), { method, headers: Object.assign({ "Content-Type": "application/json" }, headers) });
         if (!isEmpty(body)) {
             if (isFormData(body)) {
@@ -77,7 +77,7 @@ class Fetch {
                 const response = yield fetch(url, option);
                 if (response.ok) {
                     if (resType === "json") {
-                        return resolve(response.json());
+                        return resolve(response.text());
                     }
                     if (resType === "blob") {
                         return resolve(yield response.blob());

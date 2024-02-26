@@ -59,7 +59,7 @@ class Fetch {
 
   /** 统一请求方法 */
   private _request(url: string, options: FetchOptions) {
-    const { body, query, resType, method, headers } = options;
+    const { body, query, resType = "json", method, headers } = options;
     const option = {
       ...options,
       method,
@@ -87,7 +87,7 @@ class Fetch {
         const response = await fetch(url, option as RequestInit);
         if (response.ok) {
           if (resType === "json") {
-            return resolve(response.json());
+            return resolve(response.text());
           }
           if (resType === "blob") {
             return resolve(await response.blob());
