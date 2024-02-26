@@ -56,17 +56,20 @@ class Fetch {
 
   /** 统一请求方法 */
   private _request(url: string, options: FetchOptions) {
-    const { body, query, resType, method, type } = options;
+    const { body, query, resType, method, headers } = options;
     const option = {
-      "Content-Type": "application/json",
       ...options,
       method,
+      headers: {
+        "Content-Type": "application/json",
+        ...headers,
+      },
     };
 
     if (!isEmpty(body)) {
       if (isFormData(body)) {
-        delete option["Content-Type"];
-        option.body = body;
+        delete option.headers['Content-Type'];
+          option.body = body;
       } else {
         option.body = JSON.stringify(body);
       }

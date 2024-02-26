@@ -58,11 +58,11 @@ class Fetch {
     }
     /** 统一请求方法 */
     _request(url, options) {
-        const { body, query, resType, method, type } = options;
-        const option = Object.assign(Object.assign({ "Content-Type": "application/json" }, options), { method });
+        const { body, query, resType, method, headers } = options;
+        const option = Object.assign(Object.assign({}, options), { method, headers: Object.assign({ "Content-Type": "application/json" }, headers) });
         if (!isEmpty(body)) {
             if (isFormData(body)) {
-                delete option["Content-Type"];
+                delete option.headers['Content-Type'];
                 option.body = body;
             }
             else {
