@@ -134,8 +134,9 @@ class Fetch {
     const headers = {
       Sign: sign,
       "App-Key": appKey,
+      timestamp,
       ...h,
-    };
+    } as any;
 
     // 如果是 api-key 认证
     if (isApiKeyAuth(authType)&&reqType==='json') {
