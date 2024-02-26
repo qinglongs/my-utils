@@ -18,7 +18,7 @@
     "lib"
   ],
   "publishConfig": {
-    "registry": "http://192.168.81.10:2398/"
+    "registry": "http://192.168.82.96:2398/"
   },
   "repository": {
     "type": "git",
