@@ -4,13 +4,13 @@
 
 "@rollup/plugin-typescript@^11.1.6", "@rollup/plugin-typescript@11.1.5":
   version "11.1.6"
-  resolved "file:node_modules/.pnpm/@rollup+plugin-typescript@11.1.6_rollup@4.9.5/node_modules/@rollup/plugin-typescript"
+  resolved "file:node_modules/.pnpm/@rollup+plugin-typescript@11.1.6_rollup@4.9.5+tslib@2.6.2/node_modules/@rollup/plugin-typescript"
   dependencies:
     "@rollup/pluginutils" "^5.1.0"
     resolve "^1.22.1"
 
 "@zmn/zmn-scm-fetch@file:D:\\zmn\\zmn-supply-chain-utils\\packages\\fetch":
-  version "0.0.6"
+  version "0.0.7"
   resolved "file:packages/fetch"
   dependencies:
     "@zmn/zmn-scm-utils" "^0.0.2"
@@ -129,6 +129,10 @@ rollup@^4.0.0-24, rollup@^4.9.4, rollup@^4.9.5:
     "@rollup/rollup-win32-ia32-msvc" "4.9.5"
     "@rollup/rollup-win32-x64-msvc" "4.9.5"
     fsevents "~2.3.2"
+
+tslib@*, tslib@^2.6.2:
+  version "2.6.2"
+  resolved "file:node_modules/.pnpm/tslib@2.6.2/node_modules/tslib"
 
 zmn-ratel-sdk-sign@^1.0.2:
   version "1.0.2"

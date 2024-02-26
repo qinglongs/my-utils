@@ -15,7 +15,7 @@ type Options = {
     reqPublicKey?: string;
     resPrivateKey?: string;
 };
-export declare class Fetch {
+declare class Fetch {
     private _options;
     private _baseUrl;
     private _URI;
@@ -40,4 +40,5 @@ export declare class Fetch {
     /** 单例，创建 Fetch 实例 */
     static createService(option: Options): Fetch;
 }
+export declare const createService: (option: Options) => Fetch;
 export {};

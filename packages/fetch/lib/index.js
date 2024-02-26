@@ -155,5 +155,9 @@ class Fetch {
         return Fetch.instance;
     }
 }
+const createService = (option) => {
+    const service = Fetch.createService(option);
+    return service;
+};
 
-export { Fetch };
+export { createService };

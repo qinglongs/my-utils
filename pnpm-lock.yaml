@@ -4,15 +4,17 @@ specifiers:
   '@rollup/plugin-typescript': ^11.1.6
   lerna: ^8.0.2
   rollup: ^4.9.5
+  tslib: ^2.6.2
   zmn-supply-utils: '*'
 
 dependencies:
-  '@rollup/plugin-typescript': 11.1.6_rollup@4.9.5
+  '@rollup/plugin-typescript': 11.1.6_rollup@4.9.5+tslib@2.6.2
   rollup: 4.9.5
   zmn-supply-utils: 1.0.1
 
 devDependencies:
   lerna: 8.0.2
+  tslib: 2.6.2
 
 packages:
 
@@ -495,7 +497,7 @@ packages:
     dev: true
     optional: true
 
-  /@rollup/plugin-typescript/11.1.6_rollup@4.9.5:
+  /@rollup/plugin-typescript/11.1.6_rollup@4.9.5+tslib@2.6.2:
     resolution: {integrity: sha512-R92yOmIACgYdJ7dJ97p4K69I8gg6IEHt8M7dUBxN3W6nrO8uUxX5ixl0yU/N3aZTi8WhPuICvOHXQvF6FaykAA==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
@@ -511,6 +513,7 @@ packages:
       '@rollup/pluginutils': 5.1.0_rollup@4.9.5
       resolve: 1.22.8
       rollup: 4.9.5
+      tslib: 2.6.2
     dev: false
 
   /@rollup/pluginutils/5.1.0_rollup@4.9.5:
@@ -3990,7 +3993,6 @@ packages:
 
   /tslib/2.6.2:
     resolution: {integrity: sha512-AEYxH93jGFPn/a2iVAwW87VuUIkR1FVUKB77NwMF7nBTDkDrrT/Hpt/IrCJ0QXhW27jTBDcf5ZY7w6RiqTMw2Q==}
-    dev: true
 
   /tuf-js/1.1.7:
     resolution: {integrity: sha512-i3P9Kgw3ytjELUfpuKVDNBJvk4u5bXL6gskv572mcevPbSKCV3zt3djhmlEQ65yERjIbOSncy7U4cQJaB1CBCg==}

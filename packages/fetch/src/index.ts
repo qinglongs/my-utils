@@ -34,7 +34,7 @@ const isApiKeyAuth = (type: Options["authType"]) => {
   return type === "api-key";
 };
 
-export class Fetch {
+class Fetch {
   private _options: Options;
 
   private _baseUrl: string;
@@ -185,3 +185,8 @@ export class Fetch {
     return Fetch.instance;
   }
 }
+
+export const createService = (option: Options) => {
+  const service = Fetch.createService(option);
+  return service;
+};
