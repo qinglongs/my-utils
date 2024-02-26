@@ -48,7 +48,7 @@ export declare class Fetch {
     };
     constructor(options: Options);
     /** 设置 config */
-    setConfig(config: Options["config"]): void;
+    setOption(option: Options): void;
     /** 统一请求方法 */
     private _request;
     /** 请求包裹器 */

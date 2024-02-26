@@ -62,14 +62,14 @@ export class Fetch {
   }
 
   constructor(options: Options) {
-    this._options = options;
-    this._config = options.config;
-    this._baseUrl = URI[options.type];
+    this.setOption(options);
   }
 
   /** 设置 config */
-  setConfig(config: Options["config"]) {
-    this._config = { ...this._config, ...config };
+  setOption(option: Options) {
+    this._options = option;
+    this._config = { ...this._config, ...option.config };
+    this._baseUrl = URI[option.type];
   }
 
   /** 统一请求方法 */
@@ -193,6 +193,8 @@ export class Fetch {
   static createService(option: Options) {
     if (!Fetch.instance) {
       Fetch.instance = new Fetch(option);
+    } else {
+      Fetch.instance.setOption(option);
     }
     return Fetch.instance;
   }
