@@ -23,7 +23,7 @@ declare class Fetch {
     private _URI;
     setURI(URI: typeof this._URI): void;
     constructor(options: Options);
-    /** 设置 config */
+    /** 设置 config2313 */
     setOption(option: Options): void;
     /** 统一请求方法 */
     private _request;

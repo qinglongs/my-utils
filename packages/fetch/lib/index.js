@@ -52,7 +52,7 @@ class Fetch {
         this._URI = URI;
         this.setOption(options);
     }
-    /** 设置 config */
+    /** 设置 config2313 */
     setOption(option) {
         this._options = option;
     }
