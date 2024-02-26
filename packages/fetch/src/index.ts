@@ -150,7 +150,7 @@ class Fetch {
       headers,
       method,
       type,
-      body:requestData
+      body:requestData,
       ...this._options,
     };
 

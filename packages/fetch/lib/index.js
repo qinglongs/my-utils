@@ -108,7 +108,7 @@ class Fetch {
                 secretKey: secretKey,
             });
             let requestData = body;
-            const headers = Object.assign({ Sign: sign, "App-Key": appKey }, h);
+            const headers = Object.assign({ Sign: sign, "App-Key": appKey, timestamp }, h);
             // 如果是 api-key 认证
             if (isApiKeyAuth(authType) && reqType === 'json') {
                 requestData = {
