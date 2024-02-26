@@ -58,7 +58,8 @@ class Fetch {
     }
     /** 统一请求方法 */
     _request(url, options) {
-        const { body, query, resType, method } = options;
+        const { body, query, resType, method, type } = options;
+        this._baseUrl = URI[type];
         const option = Object.assign(Object.assign({ "Content-Type": "application/json" }, options), { method });
         if (!isEmpty(body)) {
             if (isFormData(body)) {

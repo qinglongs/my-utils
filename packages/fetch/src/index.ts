@@ -56,8 +56,8 @@ class Fetch {
 
   /** 统一请求方法 */
   private _request(url: string, options: FetchOptions) {
-    const { body, query, resType, method } = options;
-
+    const { body, query, resType, method, type } = options;
+    this._baseUrl = URI[type];
     const option = {
       "Content-Type": "application/json",
       ...options,
