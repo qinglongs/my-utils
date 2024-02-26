@@ -3,10 +3,10 @@ import { isEmpty, querystring, isFormData } from "@zmn/zmn-scm-utils";
 import { HttpMethod, SignUtil, RsaUtil } from "zmn-ratel-sdk";
 
 const URI = {
-  mapp: "https://api-mapp.xiujiadian.com/ratel",
-  userApp: "https://d.xiujiadian.com/userapp",
-  gateway: "https://gateway-api.xiujiadian.com",
-  ratel: "https://api-ratel.xiujiadian.com",
+  mapp: "https://test3-api-mapp.xiujiadian.com/ratel",
+  userApp: "https://test3-d.xiujiadian.com/userapp",
+  gateway: "https://test3-gateway-api.xiujiadian.com",
+  ratel: "https://test3-api-ratel.xiujiadian.com",
   upload: "123312",
 };
 
