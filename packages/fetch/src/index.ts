@@ -27,6 +27,9 @@ type Options = {
   secretKey: string;
   reqPublicKey?: string;
   resPrivateKey?: string;
+  setRequestOptions?: (
+    options: FetchOptions
+  ) => Promise<FetchOptions> | FetchOptions;
 };
 
 /** 判断是否是 api 认证 */
@@ -36,8 +39,6 @@ const isApiKeyAuth = (type: Options["authType"]) => {
 
 class Fetch {
   private _options: Options;
-
-  private _baseUrl: string;
 
   private _URI = URI;
 
@@ -68,8 +69,8 @@ class Fetch {
 
     if (!isEmpty(body)) {
       if (isFormData(body)) {
-        delete option.headers['Content-Type'];
-          option.body = body;
+        delete option.headers["Content-Type"];
+        option.body = body;
       } else {
         option.body = JSON.stringify(body);
       }
@@ -103,8 +104,14 @@ class Fetch {
     url: string,
     option: FetchOptions
   ) {
-    const { secretKey, authType, appKey, reqPublicKey, resPrivateKey } =
-      this._options;
+    const {
+      secretKey,
+      authType,
+      appKey,
+      reqPublicKey,
+      resPrivateKey,
+      setRequestOptions,
+    } = this._options;
 
     const { type = "mapp", headers: h, method, body } = option;
 
@@ -124,6 +131,12 @@ class Fetch {
 
     let requestData = body;
 
+    const headers = {
+      Sign: sign,
+      "App-Key": appKey,
+      ...h,
+    };
+
     // 如果是 api-key 认证
     if (isApiKeyAuth(authType)) {
       requestData = {
@@ -132,17 +145,18 @@ class Fetch {
       };
     }
 
-    const headers = {
-      Sign: sign,
-      ...h,
+    const baseRequestOptions = {
+      headers,
+      method,
+      type,
+      ...this._options,
     };
 
-    const response = await this._request(requestUrl, {
-      type,
-      headers: headers,
-      body: requestData,
-      method,
-    });
+    const requestOptions = setRequestOptions
+      ? await setRequestOptions(baseRequestOptions)
+      : baseRequestOptions;
+
+    const response = await this._request(requestUrl, requestOptions);
 
     const res = isApiKeyAuth(authType)
       ? RsaUtil.decrypt(JSON.stringify(response), resPrivateKey)

@@ -62,7 +62,7 @@ class Fetch {
         const option = Object.assign(Object.assign({}, options), { method, headers: Object.assign({ "Content-Type": "application/json" }, headers) });
         if (!isEmpty(body)) {
             if (isFormData(body)) {
-                delete option.headers['Content-Type'];
+                delete option.headers["Content-Type"];
                 option.body = body;
             }
             else {
@@ -95,7 +95,7 @@ class Fetch {
     /** 请求包裹器 */
     _requestWrapper(url, option) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { secretKey, authType, appKey, reqPublicKey, resPrivateKey } = this._options;
+            const { secretKey, authType, appKey, reqPublicKey, resPrivateKey, setRequestOptions, } = this._options;
             const { type = "mapp", headers: h, method, body } = option;
             const BASE_URL = URI[type];
             const requestUrl = BASE_URL + url;
@@ -107,21 +107,21 @@ class Fetch {
                 bodyParams: body,
                 secretKey: secretKey,
             });
-            let requestData = body;
+            const headers = Object.assign({ Sign: sign, "App-Key": appKey }, h);
             // 如果是 api-key 认证
             if (isApiKeyAuth(authType)) {
-                requestData = {
+                ({
                     ak: appKey,
                     body: RsaUtil.encrypt(JSON.stringify(body), reqPublicKey),
-                };
+                });
             }
-            const headers = Object.assign({ Sign: sign }, h);
-            const response = yield this._request(requestUrl, {
-                type,
-                headers: headers,
-                body: requestData,
+            const baseRequestOptions = Object.assign({ headers,
                 method,
-            });
+                type }, this._options);
+            const requestOptions = setRequestOptions
+                ? yield setRequestOptions(baseRequestOptions)
+                : baseRequestOptions;
+            const response = yield this._request(requestUrl, requestOptions);
             const res = isApiKeyAuth(authType)
                 ? RsaUtil.decrypt(JSON.stringify(response), resPrivateKey)
                 : response;

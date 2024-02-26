@@ -14,10 +14,10 @@ type Options = {
     secretKey: string;
     reqPublicKey?: string;
     resPrivateKey?: string;
+    setRequestOptions?: (options: FetchOptions) => Promise<FetchOptions> | FetchOptions;
 };
 declare class Fetch {
     private _options;
-    private _baseUrl;
     private _URI;
     setURI(URI: typeof this._URI): void;
     constructor(options: Options);
