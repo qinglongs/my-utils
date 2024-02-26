@@ -38,7 +38,7 @@ const URI = {
     userApp: "https://d.xiujiadian.com/userapp",
     gateway: "https://gateway-api.xiujiadian.com",
     ratel: "https://api-ratel.xiujiadian.com",
-    upload: "",
+    upload: "123312",
 };
 /** 判断是否是 api 认证 */
 const isApiKeyAuth = (type) => {
