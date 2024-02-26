@@ -1,6 +1,6 @@
 {
   "name": "@zmn/zmn-scm-fetch",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "供应链统一请求函数",
   "author": "liqinglong <liqinglong@zmn.cn>",
   "homepage": "https://github.com/qinglongs/zmn-supply-chain-utils#readme",
