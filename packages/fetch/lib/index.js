@@ -95,8 +95,9 @@ class Fetch {
     /** 请求包裹器 */
     _requestWrapper(url, option) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { secretKey, authType, appKey, reqPublicKey, resPrivateKey, setRequestOptions, } = this._options;
-            const { type = "mapp", headers: h, method, body, reqType = 'json' } = option;
+            const { secretKey, authType, appKey, reqPublicKey, resPrivateKey, setRequestBody, setRequestHeader, setResponseBody, } = this._options;
+            const { type = "mapp", headers: h, method, body: b, reqType = "json", } = option;
+            const body = setRequestBody ? setRequestBody(b) : b;
             const BASE_URL = URI[type];
             const requestUrl = BASE_URL + url;
             const timestamp = +new Date();
@@ -108,25 +109,25 @@ class Fetch {
                 secretKey: secretKey,
             });
             let requestData = body;
-            const headers = Object.assign({ Sign: sign, "App-Key": appKey, timestamp }, h);
+            const baseHeader = Object.assign({ Sign: sign, "App-Key": appKey, timestamp }, h);
+            const headers = setRequestHeader
+                ? setRequestHeader(baseHeader)
+                : baseHeader;
             // 如果是 api-key 认证
-            if (isApiKeyAuth(authType) && reqType === 'json') {
+            if (isApiKeyAuth(authType) && reqType === "json") {
                 requestData = {
                     ak: appKey,
                     body: RsaUtil.encrypt(JSON.stringify(body), reqPublicKey),
                 };
             }
-            const baseRequestOptions = Object.assign({ headers,
+            const requestOpt = Object.assign({ headers,
                 method,
                 type, body: requestData }, this._options);
-            const requestOptions = setRequestOptions
-                ? yield setRequestOptions(baseRequestOptions)
-                : baseRequestOptions;
-            const response = yield this._request(requestUrl, requestOptions);
+            const response = yield this._request(requestUrl, requestOpt);
             const res = isApiKeyAuth(authType)
                 ? RsaUtil.decrypt(JSON.stringify(response), resPrivateKey)
                 : response;
-            return res;
+            return setResponseBody ? setResponseBody(res) : res;
         });
     }
     /** post 请求 */

@@ -27,9 +27,11 @@ type Options = {
   secretKey: string;
   reqPublicKey?: string;
   resPrivateKey?: string;
-  setRequestOptions?: (
-    options: FetchOptions
+  setRequestBody?: (
+    body: FetchOptions["body"]
   ) => Promise<FetchOptions> | FetchOptions;
+  setResponseBody?: (response: any) => any;
+  setRequestHeader?: (headers: HeadersInit) => HeadersInit;
 };
 
 /** 判断是否是 api 认证 */
@@ -110,10 +112,20 @@ class Fetch {
       appKey,
       reqPublicKey,
       resPrivateKey,
-      setRequestOptions,
+      setRequestBody,
+      setRequestHeader,
+      setResponseBody,
     } = this._options;
 
-    const { type = "mapp", headers: h, method, body,reqType='json' } = option;
+    const {
+      type = "mapp",
+      headers: h,
+      method,
+      body: b,
+      reqType = "json",
+    } = option;
+
+    const body = setRequestBody ? setRequestBody(b) : b;
 
     const BASE_URL = URI[type];
 
@@ -129,42 +141,42 @@ class Fetch {
       secretKey: secretKey,
     });
 
-    let requestData = body;
+    let requestData: any = body;
 
-    const headers = {
+    const baseHeader = {
       Sign: sign,
       "App-Key": appKey,
       timestamp,
       ...h,
     } as any;
 
+    const headers = setRequestHeader
+      ? setRequestHeader(baseHeader)
+      : baseHeader;
+
     // 如果是 api-key 认证
-    if (isApiKeyAuth(authType)&&reqType==='json') {
+    if (isApiKeyAuth(authType) && reqType === "json") {
       requestData = {
         ak: appKey,
         body: RsaUtil.encrypt(JSON.stringify(body), reqPublicKey),
       };
     }
 
-    const baseRequestOptions = {
+    const requestOpt = {
       headers,
       method,
       type,
-      body:requestData,
+      body: requestData,
       ...this._options,
     };
 
-    const requestOptions = setRequestOptions
-      ? await setRequestOptions(baseRequestOptions)
-      : baseRequestOptions;
-
-    const response = await this._request(requestUrl, requestOptions);
+    const response = await this._request(requestUrl, requestOpt);
 
     const res = isApiKeyAuth(authType)
       ? RsaUtil.decrypt(JSON.stringify(response), resPrivateKey)
       : response;
 
-    return res as T;
+    return setResponseBody ? (setResponseBody(res) as T) : (res as T);
   }
 
   /** post 请求 */

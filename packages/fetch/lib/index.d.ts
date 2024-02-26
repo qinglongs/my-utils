@@ -14,7 +14,9 @@ type Options = {
     secretKey: string;
     reqPublicKey?: string;
     resPrivateKey?: string;
-    setRequestOptions?: (options: FetchOptions) => Promise<FetchOptions> | FetchOptions;
+    setRequestBody?: (body: FetchOptions["body"]) => Promise<FetchOptions> | FetchOptions;
+    setResponseBody?: (response: any) => any;
+    setRequestHeader?: (headers: HeadersInit) => HeadersInit;
 };
 declare class Fetch {
     private _options;
