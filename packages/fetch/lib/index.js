@@ -59,7 +59,6 @@ class Fetch {
     /** 统一请求方法 */
     _request(url, options) {
         const { body, query, resType, method, type } = options;
-        this._baseUrl = URI[type];
         const option = Object.assign(Object.assign({ "Content-Type": "application/json" }, options), { method });
         if (!isEmpty(body)) {
             if (isFormData(body)) {
@@ -75,7 +74,7 @@ class Fetch {
         }
         return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
             try {
-                const response = yield fetch(this._baseUrl + url, option);
+                const response = yield fetch(url, option);
                 if (response.ok) {
                     if (resType === "json") {
                         return resolve(response.json());

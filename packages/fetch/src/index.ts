@@ -57,7 +57,6 @@ class Fetch {
   /** 统一请求方法 */
   private _request(url: string, options: FetchOptions) {
     const { body, query, resType, method, type } = options;
-    this._baseUrl = URI[type];
     const option = {
       "Content-Type": "application/json",
       ...options,
@@ -79,10 +78,7 @@ class Fetch {
 
     return new Promise(async (resolve, reject) => {
       try {
-        const response = await fetch(
-          this._baseUrl + url,
-          option as RequestInit
-        );
+        const response = await fetch(url, option as RequestInit);
         if (response.ok) {
           if (resType === "json") {
             return resolve(response.json());
