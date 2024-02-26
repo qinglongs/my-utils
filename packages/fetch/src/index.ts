@@ -10,44 +10,32 @@ const URI = {
   upload: "",
 };
 
-type FetchOptions = Partial<{
+type FetchOptions = {
   method: "POST" | "GET" | "PUT" | "DELETE";
-  body: Record<string, any> | FormData | string;
+  body?: Record<string, any> | FormData | string;
   type: "ratel" | "gateway" | "mapp" | "upload" | "userApp";
-  headers: HeadersInit;
-  query: Record<string, any>;
-  responseType: "blob" | "json";
-}>;
+  headers?: HeadersInit;
+  query?: Record<string, any>;
+  reqType?: "json" | "formData";
+  resType?: "json" | "blob";
+};
 
 type Options = {
-  config: {
-    /** 接口认证类型 如果是 api-key 参数需要使用rsa算法加密 */
-    authType: "api-key" | "app-key";
-    appKey: string;
-    secretKey: string;
-    reqPublicKey?: string;
-    resPrivateKey?: string;
-  };
-  /** 接口请求的地址 */
-  baseUrl: string;
-  type: keyof typeof URI;
-  headers: HeadersInit;
-  data: Record<string, any>;
-  query: Record<string, any>;
-  method: FetchOptions["method"];
-  reqType: "json" | "formData";
-  resType: "json" | "blob";
+  /** 接口认证类型 如果是 api-key 参数需要使用rsa算法加密 */
+  authType: "api-key" | "app-key";
+  appKey: string;
+  secretKey: string;
+  reqPublicKey?: string;
+  resPrivateKey?: string;
 };
 
 /** 判断是否是 api 认证 */
-const isApiKeyAuth = (type: Options["config"]["authType"]) => {
+const isApiKeyAuth = (type: Options["authType"]) => {
   return type === "api-key";
 };
 
 export class Fetch {
   private _options: Options;
-
-  private _config: Options["config"];
 
   private _baseUrl: string;
 
@@ -57,10 +45,6 @@ export class Fetch {
     this._URI = URI;
   }
 
-  get config() {
-    return this._config;
-  }
-
   constructor(options: Options) {
     this.setOption(options);
   }
@@ -68,17 +52,16 @@ export class Fetch {
   /** 设置 config */
   setOption(option: Options) {
     this._options = option;
-    this._config = { ...this._config, ...option.config };
-    this._baseUrl = URI[option.type];
   }
 
   /** 统一请求方法 */
-  private _request(url: string, options: Omit<FetchOptions, "type"> = {}) {
-    const { body, responseType = "json", query } = options;
+  private _request(url: string, options: FetchOptions) {
+    const { body, query, resType, method } = options;
 
     const option = {
       "Content-Type": "application/json",
       ...options,
+      method,
     };
 
     if (!isEmpty(body)) {
@@ -101,10 +84,10 @@ export class Fetch {
           option as RequestInit
         );
         if (response.ok) {
-          if (responseType === "json") {
+          if (resType === "json") {
             return resolve(response.json());
           }
-          if (responseType === "blob") {
+          if (resType === "blob") {
             return resolve(await response.blob());
           }
         } else {
@@ -121,9 +104,10 @@ export class Fetch {
     url: string,
     option: FetchOptions
   ) {
-    const { config, data } = this._options;
+    const { secretKey, authType, appKey, reqPublicKey, resPrivateKey } =
+      this._options;
 
-    const { type = "mapp", headers: h, method } = option;
+    const { type = "mapp", headers: h, method, body } = option;
 
     const BASE_URL = URI[type];
 
@@ -135,17 +119,17 @@ export class Fetch {
       url: BASE_URL,
       httpMethod: method as HttpMethod,
       timestamp,
-      bodyParams: data,
-      secretKey: config.secretKey,
+      bodyParams: body,
+      secretKey: secretKey,
     });
 
-    let requestData = data;
+    let requestData = body;
 
     // 如果是 api-key 认证
-    if (isApiKeyAuth(config.authType)) {
+    if (isApiKeyAuth(authType)) {
       requestData = {
-        ak: config.appKey,
-        body: RsaUtil.encrypt(JSON.stringify(data), config.reqPublicKey),
+        ak: appKey,
+        body: RsaUtil.encrypt(JSON.stringify(body), reqPublicKey),
       };
     }
 
@@ -155,12 +139,14 @@ export class Fetch {
     };
 
     const response = await this._request(requestUrl, {
+      type,
       headers: headers,
       body: requestData,
+      method,
     });
 
-    const res = isApiKeyAuth(config.authType)
-      ? RsaUtil.decrypt(JSON.stringify(response), config.resPrivateKey)
+    const res = isApiKeyAuth(authType)
+      ? RsaUtil.decrypt(JSON.stringify(response), resPrivateKey)
       : response;
 
     return res as T;

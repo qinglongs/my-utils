@@ -1,51 +1,25 @@
-declare const URI: {
-    mapp: string;
-    userApp: string;
-    gateway: string;
-    ratel: string;
-    upload: string;
-};
-type FetchOptions = Partial<{
+type FetchOptions = {
     method: "POST" | "GET" | "PUT" | "DELETE";
-    body: Record<string, any> | FormData | string;
+    body?: Record<string, any> | FormData | string;
     type: "ratel" | "gateway" | "mapp" | "upload" | "userApp";
-    headers: HeadersInit;
-    query: Record<string, any>;
-    responseType: "blob" | "json";
-}>;
+    headers?: HeadersInit;
+    query?: Record<string, any>;
+    reqType?: "json" | "formData";
+    resType?: "json" | "blob";
+};
 type Options = {
-    config: {
-        /** 接口认证类型 如果是 api-key 参数需要使用rsa算法加密 */
-        authType: "api-key" | "app-key";
-        appKey: string;
-        secretKey: string;
-        reqPublicKey?: string;
-        resPrivateKey?: string;
-    };
-    /** 接口请求的地址 */
-    baseUrl: string;
-    type: keyof typeof URI;
-    headers: HeadersInit;
-    data: Record<string, any>;
-    query: Record<string, any>;
-    method: FetchOptions["method"];
-    reqType: "json" | "formData";
-    resType: "json" | "blob";
+    /** 接口认证类型 如果是 api-key 参数需要使用rsa算法加密 */
+    authType: "api-key" | "app-key";
+    appKey: string;
+    secretKey: string;
+    reqPublicKey?: string;
+    resPrivateKey?: string;
 };
 export declare class Fetch {
     private _options;
-    private _config;
     private _baseUrl;
     private _URI;
     setURI(URI: typeof this._URI): void;
-    get config(): {
-        /** 接口认证类型 如果是 api-key 参数需要使用rsa算法加密 */
-        authType: "api-key" | "app-key";
-        appKey: string;
-        secretKey: string;
-        reqPublicKey?: string;
-        resPrivateKey?: string;
-    };
     constructor(options: Options);
     /** 设置 config */
     setOption(option: Options): void;

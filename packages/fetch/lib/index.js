@@ -48,9 +48,6 @@ class Fetch {
     setURI(URI) {
         this._URI = URI;
     }
-    get config() {
-        return this._config;
-    }
     constructor(options) {
         this._URI = URI;
         this.setOption(options);
@@ -58,13 +55,11 @@ class Fetch {
     /** 设置 config */
     setOption(option) {
         this._options = option;
-        this._config = Object.assign(Object.assign({}, this._config), option.config);
-        this._baseUrl = URI[option.type];
     }
     /** 统一请求方法 */
-    _request(url, options = {}) {
-        const { body, responseType = "json", query } = options;
-        const option = Object.assign({ "Content-Type": "application/json" }, options);
+    _request(url, options) {
+        const { body, query, resType, method } = options;
+        const option = Object.assign(Object.assign({ "Content-Type": "application/json" }, options), { method });
         if (!isEmpty(body)) {
             if (isFormData(body)) {
                 delete option["Content-Type"];
@@ -81,10 +76,10 @@ class Fetch {
             try {
                 const response = yield fetch(this._baseUrl + url, option);
                 if (response.ok) {
-                    if (responseType === "json") {
+                    if (resType === "json") {
                         return resolve(response.json());
                     }
-                    if (responseType === "blob") {
+                    if (resType === "blob") {
                         return resolve(yield response.blob());
                     }
                 }
@@ -100,8 +95,8 @@ class Fetch {
     /** 请求包裹器 */
     _requestWrapper(url, option) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { config, data } = this._options;
-            const { type = "mapp", headers: h, method } = option;
+            const { secretKey, authType, appKey, reqPublicKey, resPrivateKey } = this._options;
+            const { type = "mapp", headers: h, method, body } = option;
             const BASE_URL = URI[type];
             const requestUrl = BASE_URL + url;
             const timestamp = +new Date();
@@ -109,24 +104,26 @@ class Fetch {
                 url: BASE_URL,
                 httpMethod: method,
                 timestamp,
-                bodyParams: data,
-                secretKey: config.secretKey,
+                bodyParams: body,
+                secretKey: secretKey,
             });
-            let requestData = data;
+            let requestData = body;
             // 如果是 api-key 认证
-            if (isApiKeyAuth(config.authType)) {
+            if (isApiKeyAuth(authType)) {
                 requestData = {
-                    ak: config.appKey,
-                    body: RsaUtil.encrypt(JSON.stringify(data), config.reqPublicKey),
+                    ak: appKey,
+                    body: RsaUtil.encrypt(JSON.stringify(body), reqPublicKey),
                 };
             }
             const headers = Object.assign({ Sign: sign }, h);
             const response = yield this._request(requestUrl, {
+                type,
                 headers: headers,
                 body: requestData,
+                method,
             });
-            const res = isApiKeyAuth(config.authType)
-                ? RsaUtil.decrypt(JSON.stringify(response), config.resPrivateKey)
+            const res = isApiKeyAuth(authType)
+                ? RsaUtil.decrypt(JSON.stringify(response), resPrivateKey)
                 : response;
             return res;
         });
