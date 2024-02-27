@@ -53,5 +53,10 @@ const isEmpty = (value) => {
 const isFormData = (val) => {
     return val instanceof FormData;
 };
+const isFullLink = (url) => {
+    // URL格式的正则表达式
+    const pattern = /^(http|https):\/\/[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}\/?([^\s]*)$/;
+    return pattern.test(url);
+};
 
-export { isArray, isBoolean, isEmpty, isFormData, isFunction, isNumber, isObject, isString, isSymbol, querystring };
+export { isArray, isBoolean, isEmpty, isFormData, isFullLink, isFunction, isNumber, isObject, isString, isSymbol, querystring };

@@ -1,4 +1,4 @@
-import { isEmpty, querystring, isFunction, isObject } from '@zmn/zmn-scm-utils';
+import { isEmpty, querystring, isFunction, isFullLink, isObject } from '@zmn/zmn-scm-utils';
 import { SignUtil, RsaUtil } from 'zmn-ratel-sdk';
 
 /******************************************************************************
@@ -96,37 +96,38 @@ class Fetch {
             const { secretKey, authType, appKey, reqPublicKey, resPrivateKey } = isFunction(globalConfig)
                 ? globalConfig()
                 : globalConfig;
-            const { type = "mapp", headers: h, method, data, reqType = "json", resType = "json", } = option;
-            const body = setRequestBody ? setRequestBody(data) : data;
-            const BASE_URL = this._URI[type];
-            const requestUrl = BASE_URL + url;
-            const timestamp = +new Date();
-            const sign = SignUtil.create({
-                url: BASE_URL,
-                httpMethod: method,
-                timestamp,
-                bodyParams: body,
-                secretKey: secretKey,
-            });
-            let requestData = body;
-            const baseHeader = Object.assign({ Sign: sign, "App-Key": appKey, timestamp }, h);
-            // 设置请求头
-            const headers = setRequestHeader
-                ? setRequestHeader(baseHeader)
-                : baseHeader;
-            // 如果是 api-key 认证，参数需要加密
-            if (isApiKeyAuth(authType) && reqType === "json") {
-                requestData = {
-                    ak: appKey,
-                    body: RsaUtil.encrypt(JSON.stringify(body), reqPublicKey),
-                };
-                delete headers["App-Key"];
-            }
-            const requestOpt = Object.assign(Object.assign({ headers,
-                method,
-                type, body: requestData }, this._options), { resType,
-                reqType });
             try {
+                const { type = "mapp", headers: h, method, data, reqType = "json", resType = "json", } = option;
+                const body = setRequestBody ? yield setRequestBody(data) : data;
+                const BASE_URL = this._URI[type];
+                /** 确定请求 url */
+                const requestUrl = isFullLink(url) ? url : BASE_URL + url;
+                const timestamp = +new Date();
+                const sign = SignUtil.create({
+                    url: BASE_URL,
+                    httpMethod: method,
+                    timestamp,
+                    bodyParams: body,
+                    secretKey: secretKey,
+                });
+                let requestData = body;
+                const baseHeader = Object.assign({ Sign: sign, "App-Key": appKey, timestamp }, h);
+                // 设置请求头
+                const headers = setRequestHeader
+                    ? setRequestHeader(baseHeader)
+                    : baseHeader;
+                // 如果是 api-key 认证，参数需要加密
+                if (isApiKeyAuth(authType) && reqType === "json") {
+                    requestData = {
+                        ak: appKey,
+                        body: RsaUtil.encrypt(JSON.stringify(body), reqPublicKey),
+                    };
+                    delete headers["App-Key"];
+                }
+                const requestOpt = Object.assign(Object.assign({ headers,
+                    method,
+                    type, body: requestData }, this._options), { resType,
+                    reqType });
                 const response = yield this._request(requestUrl, requestOpt);
                 const res = isApiKeyAuth(authType)
                     ? RsaUtil.decrypt(response, resPrivateKey)

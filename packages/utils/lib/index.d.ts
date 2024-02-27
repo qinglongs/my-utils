@@ -18,3 +18,4 @@ export declare const isBoolean: (value: any) => boolean;
 export declare const isEmpty: (value: any) => boolean;
 /** 值是否是formData */
 export declare const isFormData: (val: any) => boolean;
+export declare const isFullLink: (url: string) => boolean;

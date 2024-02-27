@@ -63,3 +63,9 @@ export const isEmpty = (value: any) => {
 export const isFormData = (val: any) => {
   return val instanceof FormData;
 };
+
+export const isFullLink = (url: string) => {
+   // URL格式的正则表达式
+  const pattern = /^(http|https):\/\/[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}\/?([^\s]*)$/;
+  return pattern.test(url);
+};

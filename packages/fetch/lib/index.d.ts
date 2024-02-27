@@ -34,7 +34,7 @@ type Options = {
     globalConfig: GlobalConfig | (() => GlobalConfig);
     /** 配置请求体 */
     setRequestBody?: (body: FetchOptions["body"]) => Promise<FetchOptions> | FetchOptions;
-    /** 配置响应体 */
+    /** 配置响应体,该方法抛出错误会被 onError 捕获 */
     setResponseBody?: (response: any) => any | Promise<any>;
     /** 配置 */
     setRequestHeader?: (headers: HeadersInit) => HeadersInit;
