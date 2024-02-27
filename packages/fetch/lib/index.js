@@ -92,7 +92,7 @@ class Fetch {
     /** 请求包裹器 */
     _requestWrapper(url, option) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { setRequestBody, setRequestHeader, setResponseBody, globalConfig } = this._options;
+            const { setRequestBody, setRequestHeader, setResponseBody, onError, globalConfig, } = this._options;
             const { secretKey, authType, appKey, reqPublicKey, resPrivateKey } = isFunction(globalConfig)
                 ? globalConfig()
                 : globalConfig;
@@ -126,11 +126,16 @@ class Fetch {
                 method,
                 type, body: requestData }, this._options), { resType,
                 reqType });
-            const response = yield this._request(requestUrl, requestOpt);
-            const res = isApiKeyAuth(authType)
-                ? RsaUtil.decrypt(JSON.stringify(response), resPrivateKey)
-                : response;
-            return setResponseBody ? (yield setResponseBody(res)) : res;
+            try {
+                const response = yield this._request(requestUrl, requestOpt);
+                const res = isApiKeyAuth(authType)
+                    ? RsaUtil.decrypt(JSON.stringify(response), resPrivateKey)
+                    : response;
+                return setResponseBody ? (yield setResponseBody(res)) : res;
+            }
+            catch (e) {
+                onError(e);
+            }
         });
     }
     /** post 请求 */

@@ -24,14 +24,19 @@ type GlobalConfig = {
     authType: "api-key" | "app-key";
     appKey: string;
     secretKey: string;
+    /** rsa 解密公钥 */
     reqPublicKey?: string;
+    /** rsa 加密私钥 */
     resPrivateKey?: string;
 };
 type Options = {
-    /** 接口认证类型 如果是 api-key 参数需要使用rsa算法加密 */
+    /** 接口鉴权相关配置 */
     globalConfig: GlobalConfig | (() => GlobalConfig);
+    /** 配置请求体 */
     setRequestBody?: (body: FetchOptions["body"]) => Promise<FetchOptions> | FetchOptions;
+    /** 配置响应体 */
     setResponseBody?: (response: any) => any | Promise<any>;
+    /** 配置 */
     setRequestHeader?: (headers: HeadersInit) => HeadersInit;
     onError: (reason: any) => void;
     URI: URI;

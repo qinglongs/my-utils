@@ -31,17 +31,22 @@ type GlobalConfig = {
   authType: "api-key" | "app-key";
   appKey: string;
   secretKey: string;
+  /** rsa 解密公钥 */
   reqPublicKey?: string;
+  /** rsa 加密私钥 */
   resPrivateKey?: string;
 };
 
 type Options = {
-  /** 接口认证类型 如果是 api-key 参数需要使用rsa算法加密 */
+  /** 接口鉴权相关配置 */
   globalConfig: GlobalConfig | (() => GlobalConfig);
+  /** 配置请求体 */
   setRequestBody?: (
     body: FetchOptions["body"]
   ) => Promise<FetchOptions> | FetchOptions;
+  /** 配置响应体 */
   setResponseBody?: (response: any) => any | Promise<any>;
+  /** 配置 */
   setRequestHeader?: (headers: HeadersInit) => HeadersInit;
   onError: (reason: any) => void;
   URI: URI;
@@ -130,8 +135,13 @@ class Fetch {
     url: string,
     option: FetchWrapperOptions
   ) {
-    const { setRequestBody, setRequestHeader, setResponseBody, globalConfig } =
-      this._options;
+    const {
+      setRequestBody,
+      setRequestHeader,
+      setResponseBody,
+      onError,
+      globalConfig,
+    } = this._options;
 
     const { secretKey, authType, appKey, reqPublicKey, resPrivateKey } =
       isFunction(globalConfig)
@@ -196,13 +206,17 @@ class Fetch {
       reqType,
     };
 
-    const response = await this._request(requestUrl, requestOpt);
+    try {
+      const response = await this._request(requestUrl, requestOpt);
 
-    const res = isApiKeyAuth(authType)
-      ? RsaUtil.decrypt(JSON.stringify(response), resPrivateKey)
-      : response;
+      const res = isApiKeyAuth(authType)
+        ? RsaUtil.decrypt(JSON.stringify(response), resPrivateKey)
+        : response;
 
-    return setResponseBody ? ((await setResponseBody(res)) as T) : (res as T);
+      return setResponseBody ? ((await setResponseBody(res)) as T) : (res as T);
+    } catch (e) {
+      onError(e);
+    }
   }
 
   /** post 请求 */
