@@ -233,9 +233,9 @@ class Fetch {
     if (!Fetch.instance) {
       if (isFunction(option)) {
         Fetch.instance = new Fetch((option as () => any)());
-      } else {
-        Fetch.instance.setOption(option as Options);
       }
+    } else {
+      Fetch.instance.setOption(option as Options);
     }
     return Fetch.instance;
   }

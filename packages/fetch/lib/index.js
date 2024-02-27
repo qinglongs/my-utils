@@ -152,9 +152,9 @@ class Fetch {
             if (isFunction(option)) {
                 Fetch.instance = new Fetch(option());
             }
-            else {
-                Fetch.instance.setOption(option);
-            }
+        }
+        else {
+            Fetch.instance.setOption(option);
         }
         return Fetch.instance;
     }
