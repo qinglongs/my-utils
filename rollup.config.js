@@ -1,6 +1,5 @@
 import typescript from "@rollup/plugin-typescript";
 import fs from "fs";
-import path from "path";
 
 const packages = [];
 
