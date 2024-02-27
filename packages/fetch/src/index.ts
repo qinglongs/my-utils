@@ -69,6 +69,7 @@ class Fetch {
   /** 设置 config2313 */
   setOption(option: Options) {
     this._options = option;
+    this._URI = option.URI;
   }
 
   /** 统一请求方法 */
