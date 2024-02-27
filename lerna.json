@@ -9,7 +9,7 @@
         "*.md"
       ],
       "message": "chore(release): publish",
-      "registry": "http://192.168.81.10:2398/"
+      "registry": "https://maven.xiujiadian.com/repository/zmn_npm/"
     },
     "bootstrap": {
       "ignore": "component-*",
