@@ -92,7 +92,10 @@ class Fetch {
     /** 请求包裹器 */
     _requestWrapper(url, option) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { secretKey, authType, appKey, reqPublicKey, resPrivateKey, setRequestBody, setRequestHeader, setResponseBody, } = this._options;
+            const { setRequestBody, setRequestHeader, setResponseBody, globalConfig } = this._options;
+            const { secretKey, authType, appKey, reqPublicKey, resPrivateKey } = isFunction(globalConfig)
+                ? globalConfig()
+                : globalConfig;
             const { type = "mapp", headers: h, method, data, reqType = "json", resType = "json", } = option;
             const body = setRequestBody ? setRequestBody(data) : data;
             const BASE_URL = this._URI[type];
@@ -151,6 +154,9 @@ class Fetch {
         if (!Fetch.instance) {
             if (isFunction(option)) {
                 Fetch.instance = new Fetch(option());
+            }
+            else {
+                Fetch.instance = new Fetch(option);
             }
         }
         else {

@@ -11,14 +11,12 @@ type URI = {
   gateway: string;
   /** ratel: "https://test3-api-ratel.xiujiadian.com"; */
   ratel: string;
-  /** upload: "https://test3-api-ratel.xiujiadian.com"; */
-  upload: string;
 };
 
 type FetchOptions = {
   method?: "POST" | "GET" | "PUT" | "DELETE";
   body?: Record<string, any> | FormData | string;
-  type?: "ratel" | "gateway" | "mapp" | "upload" | "userApp";
+  type?: "ratel" | "gateway" | "mapp" | "userApp";
   headers?: HeadersInit;
   query?: Record<string, any>;
   reqType?: "json" | "formData";
@@ -29,23 +27,28 @@ type FetchWrapperOptions = Omit<FetchOptions, "body"> & {
   data: FetchOptions["body"];
 };
 
-type Options = {
-  /** 接口认证类型 如果是 api-key 参数需要使用rsa算法加密 */
+type GlobalConfig = {
   authType: "api-key" | "app-key";
   appKey: string;
   secretKey: string;
   reqPublicKey?: string;
   resPrivateKey?: string;
+};
+
+type Options = {
+  /** 接口认证类型 如果是 api-key 参数需要使用rsa算法加密 */
+  globalConfig: GlobalConfig | (() => GlobalConfig);
   setRequestBody?: (
     body: FetchOptions["body"]
   ) => Promise<FetchOptions> | FetchOptions;
   setResponseBody?: (response: any) => any | Promise<any>;
   setRequestHeader?: (headers: HeadersInit) => HeadersInit;
+  onError: (reason: any) => void;
   URI: URI;
 };
 
 /** 判断是否是 api 认证 */
-const isApiKeyAuth = (type: Options["authType"]) => {
+const isApiKeyAuth = (type: GlobalConfig["authType"]) => {
   return type === "api-key";
 };
 
@@ -127,16 +130,13 @@ class Fetch {
     url: string,
     option: FetchWrapperOptions
   ) {
-    const {
-      secretKey,
-      authType,
-      appKey,
-      reqPublicKey,
-      resPrivateKey,
-      setRequestBody,
-      setRequestHeader,
-      setResponseBody,
-    } = this._options;
+    const { setRequestBody, setRequestHeader, setResponseBody, globalConfig } =
+      this._options;
+
+    const { secretKey, authType, appKey, reqPublicKey, resPrivateKey } =
+      isFunction(globalConfig)
+        ? (globalConfig as () => GlobalConfig)()
+        : (globalConfig as GlobalConfig);
 
     const {
       type = "mapp",
@@ -233,6 +233,8 @@ class Fetch {
     if (!Fetch.instance) {
       if (isFunction(option)) {
         Fetch.instance = new Fetch((option as () => any)());
+      } else {
+        Fetch.instance = new Fetch(option as Options);
       }
     } else {
       Fetch.instance.setOption(option as Options);

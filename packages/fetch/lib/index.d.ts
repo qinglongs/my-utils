@@ -7,13 +7,11 @@ type URI = {
     gateway: string;
     /** ratel: "https://test3-api-ratel.xiujiadian.com"; */
     ratel: string;
-    /** upload: "https://test3-api-ratel.xiujiadian.com"; */
-    upload: string;
 };
 type FetchOptions = {
     method?: "POST" | "GET" | "PUT" | "DELETE";
     body?: Record<string, any> | FormData | string;
-    type?: "ratel" | "gateway" | "mapp" | "upload" | "userApp";
+    type?: "ratel" | "gateway" | "mapp" | "userApp";
     headers?: HeadersInit;
     query?: Record<string, any>;
     reqType?: "json" | "formData";
@@ -22,16 +20,20 @@ type FetchOptions = {
 type FetchWrapperOptions = Omit<FetchOptions, "body"> & {
     data: FetchOptions["body"];
 };
-type Options = {
-    /** 接口认证类型 如果是 api-key 参数需要使用rsa算法加密 */
+type GlobalConfig = {
     authType: "api-key" | "app-key";
     appKey: string;
     secretKey: string;
     reqPublicKey?: string;
     resPrivateKey?: string;
+};
+type Options = {
+    /** 接口认证类型 如果是 api-key 参数需要使用rsa算法加密 */
+    globalConfig: GlobalConfig | (() => GlobalConfig);
     setRequestBody?: (body: FetchOptions["body"]) => Promise<FetchOptions> | FetchOptions;
     setResponseBody?: (response: any) => any | Promise<any>;
     setRequestHeader?: (headers: HeadersInit) => HeadersInit;
+    onError: (reason: any) => void;
     URI: URI;
 };
 declare class Fetch {
