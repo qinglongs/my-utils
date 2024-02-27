@@ -74,7 +74,7 @@ class Fetch {
                 const response = yield fetch(url, option);
                 if (response.ok) {
                     if (resType === "json") {
-                        return resolve(response.json());
+                        return resolve(response.text());
                     }
                     if (resType === "blob") {
                         return resolve(yield response.blob());
@@ -129,9 +129,17 @@ class Fetch {
             try {
                 const response = yield this._request(requestUrl, requestOpt);
                 const res = isApiKeyAuth(authType)
-                    ? RsaUtil.decrypt(JSON.stringify(response), resPrivateKey)
+                    ? RsaUtil.decrypt(response, resPrivateKey)
                     : response;
-                return setResponseBody ? (yield setResponseBody(res)) : res;
+                if (resType === "json") {
+                    const jsonRes = JSON.parse(res);
+                    return setResponseBody
+                        ? (yield setResponseBody(jsonRes))
+                        : jsonRes;
+                }
+                else {
+                    return res;
+                }
             }
             catch (e) {
                 onError(e);

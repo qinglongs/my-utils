@@ -48,6 +48,7 @@ type Options = {
   setResponseBody?: (response: any) => any | Promise<any>;
   /** 配置 */
   setRequestHeader?: (headers: HeadersInit) => HeadersInit;
+  /** 请求错误时触发 */
   onError: (reason: any) => void;
   URI: URI;
 };
@@ -116,7 +117,7 @@ class Fetch {
         const response = await fetch(url, option as RequestInit);
         if (response.ok) {
           if (resType === "json") {
-            return resolve(response.json());
+            return resolve(response.text());
           }
           if (resType === "blob") {
             return resolve(await response.blob());
@@ -210,10 +211,17 @@ class Fetch {
       const response = await this._request(requestUrl, requestOpt);
 
       const res = isApiKeyAuth(authType)
-        ? RsaUtil.decrypt(JSON.stringify(response), resPrivateKey)
+        ? RsaUtil.decrypt(response as string, resPrivateKey)
         : response;
 
-      return setResponseBody ? ((await setResponseBody(res)) as T) : (res as T);
+      if (resType === "json") {
+        const jsonRes = JSON.parse(res as string);
+        return setResponseBody
+          ? ((await setResponseBody(jsonRes)) as T)
+          : (jsonRes as T);
+      } else {
+        return res;
+      }
     } catch (e) {
       onError(e);
     }

@@ -38,6 +38,7 @@ type Options = {
     setResponseBody?: (response: any) => any | Promise<any>;
     /** 配置 */
     setRequestHeader?: (headers: HeadersInit) => HeadersInit;
+    /** 请求错误时触发 */
     onError: (reason: any) => void;
     URI: URI;
 };
@@ -53,13 +54,13 @@ declare class Fetch {
     /** 请求包裹器 */
     private _requestWrapper;
     /** post 请求 */
-    post<T = unknown>(url: string, option: FetchWrapperOptions): Promise<T>;
+    post<T = unknown>(url: string, option: FetchWrapperOptions): Promise<unknown>;
     /** get 请求 */
-    get<T = unknown>(url: string, option: FetchWrapperOptions): Promise<T>;
+    get<T = unknown>(url: string, option: FetchWrapperOptions): Promise<unknown>;
     /** put 请求 */
-    put<T = unknown>(url: string, option: FetchWrapperOptions): Promise<T>;
+    put<T = unknown>(url: string, option: FetchWrapperOptions): Promise<unknown>;
     /** delete 请求 */
-    del<T = unknown>(url: string, option: FetchWrapperOptions): Promise<T>;
+    del<T = unknown>(url: string, option: FetchWrapperOptions): Promise<unknown>;
     /** Fetch 实例 */
     private static instance;
     /** 单例模式，创建 Fetch 实例 */
