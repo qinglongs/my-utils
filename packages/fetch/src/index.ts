@@ -236,7 +236,7 @@ class Fetch {
   }
 }
 
-export const createService = (option: Options) => {
+export const createService = (option: Options | (() => Options)) => {
   const service = Fetch.createService(option);
   return service;
 };

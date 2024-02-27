@@ -58,5 +58,5 @@ declare class Fetch {
     /** 单例模式，创建 Fetch 实例 */
     static createService(option: Options | (() => Options)): Fetch;
 }
-export declare const createService: (option: Options) => Fetch;
+export declare const createService: (option: Options | (() => Options)) => Fetch;
 export {};
