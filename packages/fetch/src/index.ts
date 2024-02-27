@@ -60,6 +60,10 @@ class Fetch {
 
   constructor(options: Options) {
     this.setOption(options);
+    this.post = this.post.bind(this);
+    this.get = this.get.bind(this);
+    this.put = this.put.bind(this);
+    this.del = this.del.bind(this);
   }
 
   /** 设置 config2313 */
