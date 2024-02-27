@@ -1,4 +1,4 @@
-import { isEmpty, querystring, isFunction } from "@zmn/zmn-scm-utils";
+import { isEmpty, querystring, isFunction, isObject } from "@zmn/zmn-scm-utils";
 
 import { HttpMethod, SignUtil, RsaUtil } from "zmn-ratel-sdk";
 
@@ -224,7 +224,8 @@ class Fetch {
       }
     } catch (e) {
       onError(e);
-      throw Error(e);
+      const error = isObject(e) ? JSON.stringify(e) : e;
+      throw Error(error);
     }
   }
 
