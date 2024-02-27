@@ -1,4 +1,4 @@
-import { isEmpty, isFormData, querystring } from '@zmn/zmn-scm-utils';
+import { isEmpty, querystring, isFunction } from '@zmn/zmn-scm-utils';
 import { SignUtil, RsaUtil } from 'zmn-ratel-sdk';
 
 /******************************************************************************
@@ -33,13 +33,6 @@ typeof SuppressedError === "function" ? SuppressedError : function (error, suppr
     return e.name = "SuppressedError", e.error = error, e.suppressed = suppressed, e;
 };
 
-const URI = {
-    mapp: "https://test3-api-mapp.xiujiadian.com/ratel",
-    userApp: "https://test3-d.xiujiadian.com/userapp",
-    gateway: "https://test3-gateway-api.xiujiadian.com",
-    ratel: "https://test3-api-ratel.xiujiadian.com",
-    upload: "123312",
-};
 /** 判断是否是 api 认证 */
 const isApiKeyAuth = (type) => {
     return type === "api-key";
@@ -49,7 +42,6 @@ class Fetch {
         this._URI = URI;
     }
     constructor(options) {
-        this._URI = URI;
         this.setOption(options);
     }
     /** 设置 config2313 */
@@ -58,10 +50,10 @@ class Fetch {
     }
     /** 统一请求方法 */
     _request(url, options) {
-        const { body, query, resType = "json", method, headers } = options;
+        const { body, query, resType, reqType, method, headers } = options;
         const option = Object.assign(Object.assign({}, options), { method, headers: Object.assign({ "Content-Type": "application/json" }, headers) });
         if (!isEmpty(body)) {
-            if (isFormData(body)) {
+            if (reqType !== "json") {
                 delete option.headers["Content-Type"];
                 option.body = body;
             }
@@ -77,7 +69,7 @@ class Fetch {
                 const response = yield fetch(url, option);
                 if (response.ok) {
                     if (resType === "json") {
-                        return resolve(response.text());
+                        return resolve(response.json());
                     }
                     if (resType === "blob") {
                         return resolve(yield response.blob());
@@ -96,9 +88,9 @@ class Fetch {
     _requestWrapper(url, option) {
         return __awaiter(this, void 0, void 0, function* () {
             const { secretKey, authType, appKey, reqPublicKey, resPrivateKey, setRequestBody, setRequestHeader, setResponseBody, } = this._options;
-            const { type = "mapp", headers: h, method, body: b, reqType = "json", } = option;
-            const body = setRequestBody ? setRequestBody(b) : b;
-            const BASE_URL = URI[type];
+            const { type = "mapp", headers: h, method, data, reqType = "json", resType = "json", } = option;
+            const body = setRequestBody ? setRequestBody(data) : data;
+            const BASE_URL = this._URI[type];
             const requestUrl = BASE_URL + url;
             const timestamp = +new Date();
             const sign = SignUtil.create({
@@ -110,24 +102,27 @@ class Fetch {
             });
             let requestData = body;
             const baseHeader = Object.assign({ Sign: sign, "App-Key": appKey, timestamp }, h);
+            // 设置请求头
             const headers = setRequestHeader
                 ? setRequestHeader(baseHeader)
                 : baseHeader;
-            // 如果是 api-key 认证
+            // 如果是 api-key 认证，参数需要加密
             if (isApiKeyAuth(authType) && reqType === "json") {
                 requestData = {
                     ak: appKey,
                     body: RsaUtil.encrypt(JSON.stringify(body), reqPublicKey),
                 };
+                delete headers["App-Key"];
             }
-            const requestOpt = Object.assign({ headers,
+            const requestOpt = Object.assign(Object.assign({ headers,
                 method,
-                type, body: requestData }, this._options);
+                type, body: requestData }, this._options), { resType,
+                reqType });
             const response = yield this._request(requestUrl, requestOpt);
             const res = isApiKeyAuth(authType)
                 ? RsaUtil.decrypt(JSON.stringify(response), resPrivateKey)
                 : response;
-            return setResponseBody ? setResponseBody(res) : res;
+            return setResponseBody ? (yield setResponseBody(res)) : res;
         });
     }
     /** post 请求 */
@@ -146,13 +141,15 @@ class Fetch {
     del(url, option) {
         return this._requestWrapper(url, Object.assign({ method: "DELETE" }, option));
     }
-    /** 单例，创建 Fetch 实例 */
+    /** 单例模式，创建 Fetch 实例 */
     static createService(option) {
         if (!Fetch.instance) {
-            Fetch.instance = new Fetch(option);
-        }
-        else {
-            Fetch.instance.setOption(option);
+            if (isFunction(option)) {
+                Fetch.instance = new Fetch(option());
+            }
+            else {
+                Fetch.instance.setOption(option);
+            }
         }
         return Fetch.instance;
     }

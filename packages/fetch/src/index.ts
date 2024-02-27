@@ -1,23 +1,32 @@
-import { isEmpty, querystring, isFormData } from "@zmn/zmn-scm-utils";
+import { isEmpty, querystring, isFunction } from "@zmn/zmn-scm-utils";
 
 import { HttpMethod, SignUtil, RsaUtil } from "zmn-ratel-sdk";
 
-const URI = {
-  mapp: "https://test3-api-mapp.xiujiadian.com/ratel",
-  userApp: "https://test3-d.xiujiadian.com/userapp",
-  gateway: "https://test3-gateway-api.xiujiadian.com",
-  ratel: "https://test3-api-ratel.xiujiadian.com",
-  upload: "123312",
+type URI = {
+  /**  mapp: "https://test3-api-mapp.xiujiadian.com/ratel", */
+  mapp: string;
+  /**  userApp: "https://test3-d.xiujiadian.com/userapp"; */
+  userApp: string;
+  /** gateway: "https://test3-gateway-api.xiujiadian.com"; */
+  gateway: string;
+  /** ratel: "https://test3-api-ratel.xiujiadian.com"; */
+  ratel: string;
+  /** upload: "https://test3-api-ratel.xiujiadian.com"; */
+  upload: string;
 };
 
 type FetchOptions = {
-  method: "POST" | "GET" | "PUT" | "DELETE";
+  method?: "POST" | "GET" | "PUT" | "DELETE";
   body?: Record<string, any> | FormData | string;
-  type: "ratel" | "gateway" | "mapp" | "upload" | "userApp";
+  type?: "ratel" | "gateway" | "mapp" | "upload" | "userApp";
   headers?: HeadersInit;
   query?: Record<string, any>;
   reqType?: "json" | "formData";
   resType?: "json" | "blob";
+};
+
+type FetchWrapperOptions = Omit<FetchOptions, "body"> & {
+  data: FetchOptions["body"];
 };
 
 type Options = {
@@ -30,8 +39,9 @@ type Options = {
   setRequestBody?: (
     body: FetchOptions["body"]
   ) => Promise<FetchOptions> | FetchOptions;
-  setResponseBody?: (response: any) => any;
+  setResponseBody?: (response: any) => any | Promise<any>;
   setRequestHeader?: (headers: HeadersInit) => HeadersInit;
+  URI: URI;
 };
 
 /** 判断是否是 api 认证 */
@@ -42,7 +52,7 @@ const isApiKeyAuth = (type: Options["authType"]) => {
 class Fetch {
   private _options: Options;
 
-  private _URI = URI;
+  private _URI: URI;
 
   setURI(URI: typeof this._URI) {
     this._URI = URI;
@@ -58,8 +68,14 @@ class Fetch {
   }
 
   /** 统一请求方法 */
-  private _request(url: string, options: FetchOptions) {
-    const { body, query, resType = "json", method, headers } = options;
+  private _request(
+    url: string,
+    options: Omit<
+      FetchOptions,
+      "setRequestBody" | "setResponseBody" | "setRequestHeader"
+    >
+  ) {
+    const { body, query, resType, reqType, method, headers } = options;
     const option = {
       ...options,
       method,
@@ -70,7 +86,7 @@ class Fetch {
     };
 
     if (!isEmpty(body)) {
-      if (isFormData(body)) {
+      if (reqType !== "json") {
         delete option.headers["Content-Type"];
         option.body = body;
       } else {
@@ -87,7 +103,7 @@ class Fetch {
         const response = await fetch(url, option as RequestInit);
         if (response.ok) {
           if (resType === "json") {
-            return resolve(response.text());
+            return resolve(response.json());
           }
           if (resType === "blob") {
             return resolve(await response.blob());
@@ -104,7 +120,7 @@ class Fetch {
   /** 请求包裹器 */
   private async _requestWrapper<T = unknown>(
     url: string,
-    option: FetchOptions
+    option: FetchWrapperOptions
   ) {
     const {
       secretKey,
@@ -121,13 +137,14 @@ class Fetch {
       type = "mapp",
       headers: h,
       method,
-      body: b,
+      data,
       reqType = "json",
+      resType = "json",
     } = option;
 
-    const body = setRequestBody ? setRequestBody(b) : b;
+    const body = setRequestBody ? setRequestBody(data) : data;
 
-    const BASE_URL = URI[type];
+    const BASE_URL = this._URI[type];
 
     const requestUrl = BASE_URL + url;
 
@@ -150,16 +167,18 @@ class Fetch {
       ...h,
     } as any;
 
+    // 设置请求头
     const headers = setRequestHeader
       ? setRequestHeader(baseHeader)
       : baseHeader;
 
-    // 如果是 api-key 认证
+    // 如果是 api-key 认证，参数需要加密
     if (isApiKeyAuth(authType) && reqType === "json") {
       requestData = {
         ak: appKey,
         body: RsaUtil.encrypt(JSON.stringify(body), reqPublicKey),
       };
+      delete headers["App-Key"];
     }
 
     const requestOpt = {
@@ -168,6 +187,8 @@ class Fetch {
       type,
       body: requestData,
       ...this._options,
+      resType,
+      reqType,
     };
 
     const response = await this._request(requestUrl, requestOpt);
@@ -176,38 +197,40 @@ class Fetch {
       ? RsaUtil.decrypt(JSON.stringify(response), resPrivateKey)
       : response;
 
-    return setResponseBody ? (setResponseBody(res) as T) : (res as T);
+    return setResponseBody ? ((await setResponseBody(res)) as T) : (res as T);
   }
 
   /** post 请求 */
-  public post(url: string, option: FetchOptions) {
-    return this._requestWrapper(url, { method: "POST", ...option });
+  public post<T = unknown>(url: string, option: FetchWrapperOptions) {
+    return this._requestWrapper<T>(url, { method: "POST", ...option });
   }
 
   /** get 请求 */
-  public get(url: string, option: FetchOptions) {
-    return this._requestWrapper(url, { method: "GET", ...option });
+  public get<T = unknown>(url: string, option: FetchWrapperOptions) {
+    return this._requestWrapper<T>(url, { method: "GET", ...option });
   }
 
   /** put 请求 */
-  public put(url: string, option: FetchOptions) {
-    return this._requestWrapper(url, { method: "PUT", ...option });
+  public put<T = unknown>(url: string, option: FetchWrapperOptions) {
+    return this._requestWrapper<T>(url, { method: "PUT", ...option });
   }
 
   /** delete 请求 */
-  public del(url: string, option: FetchOptions) {
-    return this._requestWrapper(url, { method: "DELETE", ...option });
+  public del<T = unknown>(url: string, option: FetchWrapperOptions) {
+    return this._requestWrapper<T>(url, { method: "DELETE", ...option });
   }
 
   /** Fetch 实例 */
   private static instance: Fetch;
 
-  /** 单例，创建 Fetch 实例 */
-  static createService(option: Options) {
+  /** 单例模式，创建 Fetch 实例 */
+  static createService(option: Options | (() => Options)) {
     if (!Fetch.instance) {
-      Fetch.instance = new Fetch(option);
-    } else {
-      Fetch.instance.setOption(option);
+      if (isFunction(option)) {
+        Fetch.instance = new Fetch((option as () => any)());
+      } else {
+        Fetch.instance.setOption(option as Options);
+      }
     }
     return Fetch.instance;
   }

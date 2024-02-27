@@ -1,11 +1,26 @@
+type URI = {
+    /**  mapp: "https://test3-api-mapp.xiujiadian.com/ratel", */
+    mapp: string;
+    /**  userApp: "https://test3-d.xiujiadian.com/userapp"; */
+    userApp: string;
+    /** gateway: "https://test3-gateway-api.xiujiadian.com"; */
+    gateway: string;
+    /** ratel: "https://test3-api-ratel.xiujiadian.com"; */
+    ratel: string;
+    /** upload: "https://test3-api-ratel.xiujiadian.com"; */
+    upload: string;
+};
 type FetchOptions = {
-    method: "POST" | "GET" | "PUT" | "DELETE";
+    method?: "POST" | "GET" | "PUT" | "DELETE";
     body?: Record<string, any> | FormData | string;
-    type: "ratel" | "gateway" | "mapp" | "upload" | "userApp";
+    type?: "ratel" | "gateway" | "mapp" | "upload" | "userApp";
     headers?: HeadersInit;
     query?: Record<string, any>;
     reqType?: "json" | "formData";
     resType?: "json" | "blob";
+};
+type FetchWrapperOptions = Omit<FetchOptions, "body"> & {
+    data: FetchOptions["body"];
 };
 type Options = {
     /** 接口认证类型 如果是 api-key 参数需要使用rsa算法加密 */
@@ -15,8 +30,9 @@ type Options = {
     reqPublicKey?: string;
     resPrivateKey?: string;
     setRequestBody?: (body: FetchOptions["body"]) => Promise<FetchOptions> | FetchOptions;
-    setResponseBody?: (response: any) => any;
+    setResponseBody?: (response: any) => any | Promise<any>;
     setRequestHeader?: (headers: HeadersInit) => HeadersInit;
+    URI: URI;
 };
 declare class Fetch {
     private _options;
@@ -30,17 +46,17 @@ declare class Fetch {
     /** 请求包裹器 */
     private _requestWrapper;
     /** post 请求 */
-    post(url: string, option: FetchOptions): Promise<unknown>;
+    post<T = unknown>(url: string, option: FetchWrapperOptions): Promise<T>;
     /** get 请求 */
-    get(url: string, option: FetchOptions): Promise<unknown>;
+    get<T = unknown>(url: string, option: FetchWrapperOptions): Promise<T>;
     /** put 请求 */
-    put(url: string, option: FetchOptions): Promise<unknown>;
+    put<T = unknown>(url: string, option: FetchWrapperOptions): Promise<T>;
     /** delete 请求 */
-    del(url: string, option: FetchOptions): Promise<unknown>;
+    del<T = unknown>(url: string, option: FetchWrapperOptions): Promise<T>;
     /** Fetch 实例 */
     private static instance;
-    /** 单例，创建 Fetch 实例 */
-    static createService(option: Options): Fetch;
+    /** 单例模式，创建 Fetch 实例 */
+    static createService(option: Options | (() => Options)): Fetch;
 }
 export declare const createService: (option: Options) => Fetch;
 export {};
