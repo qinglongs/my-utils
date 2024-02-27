@@ -224,6 +224,7 @@ class Fetch {
       }
     } catch (e) {
       onError(e);
+      throw Error(e);
     }
   }
 
